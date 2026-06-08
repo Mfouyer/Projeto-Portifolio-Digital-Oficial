@@ -1,0 +1,42 @@
+:root {
+    /* Colors - Premium Dark Palette */
+    --bg-dark: #0f172a;
+    /* Lighter slate blue */
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-glass: rgba(255, 255, 255, 0.08);
+
+    --primary: #8b5cf6;
+    /* Violet */
+    --secondary: #3b82f6;
+    /* Blue */
+    --accent: #d946ef;
+    /* Fuchsia */
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+
+    --border-glass: rgba(255, 255, 255, 0.1);
+
+    /* Gradientes */
+    --grad-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+    --grad-hero: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+
+    /* Glassmorphism Effect */
+    --glass-blur: blur(12px);
+    --glass-border: 1px solid var(--border-glass);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+}
