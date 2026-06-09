@@ -42,19 +42,27 @@ const FLAGSHIP_DETAILS = [
   { icon: '03', titleKey: 'oc.card3.h4', bodyKey: 'oc.card3.p' },
 ];
 
-// Certificações: status fixo, título/descrição/label traduzidos.
-const CERTIFICATIONS = [
-  { tag: 'PSM', titleKey: 'cred.c1.title', status: 'earned', statusKey: 'cred.status.earned', descKey: 'cred.c1.desc' },
-  { tag: 'AB', titleKey: 'cred.c2.title', status: 'studying', statusKey: 'cred.status.studying', descKey: 'cred.c2.desc' },
-  { tag: 'AI', titleKey: 'cred.c3.title', status: 'planned', statusKey: 'cred.status.planned', descKey: 'cred.c3.desc' },
+// Certificações e roadmap: agora data-driven via PocketBase (collections
+// 'certifications' e 'learning_roadmap'). Os arrays abaixo são apenas FALLBACK
+// para o caso de a collection vir vazia / o backend não responder — assim a
+// secção nunca aparece vazia. O status (earned/studying/planned) reaproveita as
+// chaves i18n 'cred.status.*'; a descrição é multilingue (desc_pt/en/es).
+const FALLBACK_CERTIFICATIONS = [
+  { id: 'fb-ai900', tag: 'MS', title: 'Azure AI Fundamentals (AI-900)', status: 'earned',
+    desc_pt: 'Microsoft — Fundamentos de IA na Azure', desc_en: 'Microsoft — Azure AI fundamentals', desc_es: 'Microsoft — Fundamentos de IA en Azure' },
+  { id: 'fb-vand', tag: 'V', title: 'Agentic AI and AI Agents for Leaders', status: 'earned',
+    desc_pt: 'Vanderbilt University — Agentic AI, governança de IA e liderança', desc_en: 'Vanderbilt University — Agentic AI, AI governance and leadership', desc_es: 'Vanderbilt University — Agentic AI, gobernanza de IA y liderazgo' },
+  { id: 'fb-ai103', tag: 'MS', title: 'AI-103: Azure AI App and Agent Developer Associate', status: 'studying',
+    desc_pt: 'Microsoft — Sucessora da AI-102: Python + Azure AI Foundry e multi-agentes', desc_en: 'Microsoft — Successor to AI-102: Python + Azure AI Foundry and multi-agent systems', desc_es: 'Microsoft — Sucesora de la AI-102: Python + Azure AI Foundry y multiagentes' },
+  { id: 'fb-psm', tag: 'PSM', title: 'Professional Scrum Master (PSM)', status: 'earned',
+    desc_pt: 'Scrum.org — Metodologia ágil e facilitação de equipas', desc_en: 'Scrum.org — Agile methodology and team facilitation', desc_es: 'Scrum.org — Metodología ágil y facilitación de equipos' },
 ];
 
-const ROADMAP = [
-  { q: "Q3 '26", cert: 'GSDC AI Governance Certification', org: 'GSDC' },
-  { q: "Q3 '26", cert: 'Microsoft AI-102 Azure AI Engineer', org: 'Microsoft' },
-  { q: "Q4 '26", cert: 'Oxford AI Programme', org: 'Oxford Said' },
-  { q: "Q4 '26", cert: 'NVIDIA Deep Learning Institute', org: 'NVIDIA' },
-  { q: '2027', cert: 'IIBA CBAP — Business Analysis', org: 'IIBA' },
+const FALLBACK_ROADMAP = [
+  { id: 'fr-ai103', period: "Q3 '26", cert: 'AI-103 — Azure AI App & Agent Developer', org: 'Microsoft' },
+  { id: 'fr-ab730', period: "Q3 '26", cert: 'AB-730 / AB-731 — Agentic AI', org: 'LevelUp (Microsoft)' },
+  { id: 'fr-az104', period: "Q4 '26", cert: 'AZ-104 — Azure Administrator', org: 'Microsoft' },
+  { id: 'fr-aigp', period: "Q4 '26", cert: 'AIGP — AI Governance Professional', org: 'IAPP' },
 ];
 
 const CONTACT_EMAIL = 'marcos.fouyer@gmail.com';
@@ -115,10 +123,12 @@ function useTypedText(phrases: string[]): string {
    ════════════════════════════════════════════════════════════ */
 
 const App: React.FC = () => {
-  const { t, typed: typedPhrases } = useLanguage();
+  const { t, typed: typedPhrases, lang } = useLanguage();
 
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
+  const [certifications, setCertifications] = React.useState<any[]>([]);
+  const [roadmap, setRoadmap] = React.useState<any[]>([]);
   const [navOpen, setNavOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -133,8 +143,12 @@ const App: React.FC = () => {
       try {
         const skillsData = await pb.collection('skills').getFullList({ filter: 'highlighted = true', requestKey: null });
         const projectsData = await pb.collection('projects').getFullList({ filter: 'highlighted = true', requestKey: null });
+        const certsData = await pb.collection('certifications').getFullList({ sort: 'sort', requestKey: null });
+        const roadmapData = await pb.collection('learning_roadmap').getFullList({ sort: 'sort', requestKey: null });
         setSkills(skillsData);
         setProjects(projectsData);
+        setCertifications(certsData);
+        setRoadmap(roadmapData);
       } catch (error: any) {
         if (error?.isAbort) return;
         console.error('Error fetching portfolio data:', error);
@@ -412,12 +426,12 @@ const App: React.FC = () => {
             <div className="cred-section">
               <h3>{t('cred.certs.title')}</h3>
               <div className="cred-list">
-                {CERTIFICATIONS.map((c, i) => (
-                  <FadeUp className="cred-item" delay={0.1 * i} key={c.titleKey}>
+                {(certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS).map((c, i) => (
+                  <FadeUp className="cred-item" delay={0.1 * i} key={c.id}>
                     <div className="cred-icon">{c.tag}</div>
                     <div className="cred-body">
-                      <strong>{t(c.titleKey)} <span className={`cred-status ${c.status}`}>{t(c.statusKey)}</span></strong>
-                      <span>{t(c.descKey)}</span>
+                      <strong>{c.title} <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span></strong>
+                      <span>{c[`desc_${lang}`] || c.desc_en}</span>
                     </div>
                   </FadeUp>
                 ))}
@@ -427,9 +441,9 @@ const App: React.FC = () => {
             <div className="cred-section">
               <h3>{t('cred.roadmap.title')}</h3>
               <div className="roadmap-list">
-                {ROADMAP.map((r, i) => (
-                  <FadeUp className="roadmap-item" delay={0.1 * i} key={r.cert}>
-                    <span className="roadmap-q">{r.q}</span>
+                {(roadmap.length > 0 ? roadmap : FALLBACK_ROADMAP).map((r, i) => (
+                  <FadeUp className="roadmap-item" delay={0.1 * i} key={r.id}>
+                    <span className="roadmap-q">{r.period}</span>
                     <span className="roadmap-cert">{r.cert}</span>
                     <span className="roadmap-org">{r.org}</span>
                   </FadeUp>
