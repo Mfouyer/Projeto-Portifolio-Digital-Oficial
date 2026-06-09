@@ -952,11 +952,29 @@
   border-radius: 3px;
   padding: 2px 6px;
   margin-left: 6px;
+  /* glow pulsante: cada estado pulsa na sua própria cor semântica (override por variante) */
+  --cred-glow: rgba(217,119,6,0.4);
+  animation: cred-status-pulse 2.8s ease-in-out infinite;
+  will-change: box-shadow, opacity;
 }
 
-.architect-page .cred-status.earned { background: rgba(34,197,94,0.12); color: #22C55E; }
-.architect-page .cred-status.studying { background: rgba(217,119,6,0.12); color: var(--amber); }
-.architect-page .cred-status.planned { background: var(--surface2); color: var(--text-dim); }
+/* Pulsar subtil e elegante: glow âmbar/semântico a crescer e diminuir + leve respiração de opacidade */
+@keyframes cred-status-pulse {
+  0%, 100% { box-shadow: 0 0 2px 0 var(--cred-glow); opacity: 0.82; }
+  50%      { box-shadow: 0 0 11px 1px var(--cred-glow); opacity: 1; }
+}
+
+.architect-page .cred-status.earned { background: rgba(34,197,94,0.12); color: #22C55E; --cred-glow: rgba(34,197,94,0.42); }
+.architect-page .cred-status.studying { background: rgba(217,119,6,0.12); color: var(--amber); --cred-glow: rgba(217,119,6,0.45); }
+.architect-page .cred-status.planned { background: var(--surface2); color: var(--text-dim); --cred-glow: rgba(148,163,184,0.3); }
+
+/* Acessibilidade: desativa o pulsar para quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .architect-page .cred-status {
+    animation: none;
+    opacity: 1;
+  }
+}
 
 .architect-page .roadmap-list {
   display: flex;
