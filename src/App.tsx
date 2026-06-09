@@ -2,67 +2,51 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
-  Shield, Calendar, Clock, ArrowDown, Github, Linkedin, Mail,
-  ExternalLink, Send, Code2, icons,
+  Shield, ArrowDown, Github, Linkedin, Mail,
+  ExternalLink, Send, Code2, FolderOpen, LayoutGrid, icons,
 } from 'lucide-react';
 import { pb } from './lib/pocketbase';
 import { openClaudeDiagram } from './components/OpenClaudeDiagram';
 import HeroMotion from './components/HeroMotion';
+import LangSwitcher from './components/LangSwitcher';
+import { useLanguage } from './contexts/LanguageContext';
 import './App.css';
 import './styles/architect.css';
 
 /* ════════════════════════════════════════════════════════════
-   CONTEÚDO ESTÁTICO — edite estes blocos livremente.
-   (Skills, Projetos e o formulário de contato são DINÂMICOS,
-    vindos do PocketBase / gravando em 'messages'.)
+   CONTEÚDO ESTÁTICO controlado por i18n (PT/EN/ES).
+   Skills, Projetos e o formulário de contacto são DINÂMICOS,
+   vindos do PocketBase / gravando em 'messages'.
    ════════════════════════════════════════════════════════════ */
 
-const TYPED_PHRASES = [
-  'multi-agent AI systems in production.',
-  'AI governance frameworks that work.',
-  'automation systems that run 24/7.',
-  'AI operations, not just AI demos.',
-];
-
+// Stats: números fixos, labels traduzidos por chave.
 const HERO_STATS = [
-  { number: '15+', label: 'Years in enterprise ops' },
-  { number: '6', label: 'AI agents in production' },
-  { number: '24/7', label: 'Systems running autonomously' },
+  { number: '15+', labelKey: 'hero.stat1.label' },
+  { number: '10', labelKey: 'hero.stat2.label' },
+  { number: '24/7', labelKey: 'hero.stat3.label' },
 ];
 
 const ABOUT_ACTS = [
-  {
-    label: 'Act I — The Operator',
-    title: 'Built for scale from day one.',
-    body: "Over 15 years at MEO — one of Portugal's largest telecoms — I ran Scrum governance and enterprise-scale service operations. I know what breaks at volume, what the business actually needs, and how to get cross-functional teams moving in the same direction. That operational discipline is the foundation everything else sits on.",
-  },
-  {
-    label: 'Act II — The Builder',
-    title: 'From using AI tools to running AI systems.',
-    body: "I didn't just start using AI — I built an infrastructure for it. OpenClaude is my own multi-agent AI system: six specialised agents coordinated by an orchestration layer, running 24/7 on a self-hosted server. Real production. Real orchestration. Real problems solved. That shift from consumer to architect changed how I see what's possible.",
-  },
-  {
-    label: 'Act III — The Consultant',
-    title: 'Ready to bring this playbook to your organisation.',
-    body: "I'm now available to Australian companies looking to move from AI experiments to AI operations. I help teams design agent architectures, implement governance frameworks, and build systems that don't just demo well — they run reliably in production.",
-  },
+  { labelKey: 'about.act1.label', titleKey: 'about.act1.h3', bodyKey: 'about.act1.p' },
+  { labelKey: 'about.act2.label', titleKey: 'about.act2.h3', bodyKey: 'about.act2.p' },
+  { labelKey: 'about.act3.label', titleKey: 'about.act3.h3', bodyKey: 'about.act3.p' },
 ];
 
-const FLAGSHIP_TAGS = [
-  'Multi-agent orchestration', 'Self-hosted', '24/7 production',
-  'Claude API', 'Telegram integration', 'Persistent memory',
+const FLAGSHIP_TAG_KEYS = [
+  'oc.tag1', 'oc.tag2', 'oc.tag3', 'oc.tag4', 'oc.tag5', 'oc.tag6',
 ];
 
 const FLAGSHIP_DETAILS = [
-  { icon: '01', title: 'Specialised Agents, Clear Roles', body: 'Each agent owns a domain — infrastructure, engineering, strategy, psychology, intelligence. No blurring of responsibilities. Every agent knows its boundary and hands off correctly.' },
-  { icon: '02', title: 'Persistent Memory Layer', body: 'Agents maintain context across sessions via structured file-based memory. Decisions made in one conversation inform the next — the system gets smarter over time, not just faster.' },
-  { icon: '03', title: 'Production-Grade, Not a Demo', body: 'Running on a self-hosted Ubuntu server with Coolify orchestration, Tailscale access, real integrations (Telegram, GitHub, Obsidian) and daily operational use — not a proof of concept.' },
+  { icon: '01', titleKey: 'oc.card1.h4', bodyKey: 'oc.card1.p' },
+  { icon: '02', titleKey: 'oc.card2.h4', bodyKey: 'oc.card2.p' },
+  { icon: '03', titleKey: 'oc.card3.h4', bodyKey: 'oc.card3.p' },
 ];
 
+// Certificações: status fixo, título/descrição/label traduzidos.
 const CERTIFICATIONS = [
-  { tag: 'PSM', title: 'Professional Scrum Master I', status: 'earned', statusLabel: 'Earned', desc: 'Scrum.org — Agile methodology and team facilitation' },
-  { tag: 'AB', title: 'IIBA CBAP Prerequisites (AB-730/731)', status: 'studying', statusLabel: 'Studying', desc: 'Business Analysis — requirements, stakeholder management' },
-  { tag: 'AI', title: 'AI-102: Azure AI Engineer Associate', status: 'planned', statusLabel: 'Planned', desc: 'Microsoft — AI solution design and implementation' },
+  { tag: 'PSM', titleKey: 'cred.c1.title', status: 'earned', statusKey: 'cred.status.earned', descKey: 'cred.c1.desc' },
+  { tag: 'AB', titleKey: 'cred.c2.title', status: 'studying', statusKey: 'cred.status.studying', descKey: 'cred.c2.desc' },
+  { tag: 'AI', titleKey: 'cred.c3.title', status: 'planned', statusKey: 'cred.status.planned', descKey: 'cred.c3.desc' },
 ];
 
 const ROADMAP = [
@@ -98,14 +82,16 @@ const FadeUp: React.FC<{ children: React.ReactNode; delay?: number; className?: 
   </motion.div>
 );
 
-// Efeito de "digitação" da tagline do hero.
+// Efeito de "digitação" da tagline do hero — reinicia quando o idioma muda.
 function useTypedText(phrases: string[]): string {
   const [text, setText] = React.useState('');
   React.useEffect(() => {
+    setText('');
     let phraseIdx = 0, charIdx = 0, deleting = false;
     let timer: ReturnType<typeof setTimeout>;
     const tick = () => {
       const current = phrases[phraseIdx];
+      if (!current) return;
       if (!deleting) {
         charIdx++;
         setText(current.slice(0, charIdx));
@@ -129,6 +115,8 @@ function useTypedText(phrases: string[]): string {
    ════════════════════════════════════════════════════════════ */
 
 const App: React.FC = () => {
+  const { t, typed: typedPhrases } = useLanguage();
+
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
   const [navOpen, setNavOpen] = React.useState(false);
@@ -138,7 +126,7 @@ const App: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
 
-  const typed = useTypedText(TYPED_PHRASES);
+  const typed = useTypedText(typedPhrases);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -172,7 +160,7 @@ const App: React.FC = () => {
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {
       console.error('Error sending message:', err);
-      alert('Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.');
+      alert(t('contact.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -183,23 +171,26 @@ const App: React.FC = () => {
 
       {/* ─── Navigation ─── */}
       <nav className={scrolled ? 'scrolled' : ''}>
-        <div className="nav-logo">MF<span>.</span>dev</div>
-        <ul className={`nav-links${navOpen ? ' open' : ''}`}>
-          <li><a href="#about" onClick={closeNav}>About</a></li>
-          <li><a href="#openclaude" onClick={closeNav}>OpenClaude</a></li>
-          <li><a href="#projects" onClick={closeNav}>Projects</a></li>
-          <li><a href="#capabilities" onClick={closeNav}>Capabilities</a></li>
-          <li><a href="#credentials" onClick={closeNav}>Credentials</a></li>
-          <li><a href="#contact" className="nav-cta" onClick={closeNav}>Book a Call</a></li>
-          <li className="nav-divider" aria-hidden="true"></li>
-          <li>
-            <Link to="/admin" className="nav-admin" title="Painel Admin" onClick={closeNav}>
-              <Shield size={16} />
-            </Link>
-          </li>
-        </ul>
-        <div className="nav-hamburger" onClick={() => setNavOpen(o => !o)}>
-          <span></span><span></span><span></span>
+        <div className="nav-logo">EF<span>.</span>dev</div>
+        <div className="nav-right">
+          <ul className={`nav-links${navOpen ? ' open' : ''}`}>
+            <li><a href="#about" onClick={closeNav}>{t('nav.about')}</a></li>
+            <li><a href="#openclaude" onClick={closeNav}>{t('nav.openclaude')}</a></li>
+            <li><a href="#projects" onClick={closeNav}>{t('nav.projects')}</a></li>
+            <li><a href="#capabilities" onClick={closeNav}>{t('nav.capabilities')}</a></li>
+            <li><a href="#credentials" onClick={closeNav}>{t('nav.credentials')}</a></li>
+            <li><a href="#contact" className="nav-cta" onClick={closeNav}>{t('nav.cta')}</a></li>
+            <li className="nav-divider" aria-hidden="true"></li>
+            <li>
+              <Link to="/admin" className="nav-admin" title="Painel Admin" onClick={closeNav}>
+                <Shield size={16} />
+              </Link>
+            </li>
+          </ul>
+          <LangSwitcher />
+          <div className="nav-hamburger" onClick={() => setNavOpen(o => !o)}>
+            <span></span><span></span><span></span>
+          </div>
         </div>
       </nav>
 
@@ -214,31 +205,31 @@ const App: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="hero-badge">Available for consulting — Australia</div>
+            <div className="hero-badge">{t('hero.badge')}</div>
 
             <h1 className="hero-title">
-              AI Systems<br />
-              <span className="accent">Architect.</span>
+              {t('hero.title.line1')}<br />
+              <span className="accent">{t('hero.title.accent')}</span>
             </h1>
 
             <p className="hero-tagline">
-              I build, govern and operate <span>{typed}</span><span className="typed-cursor"></span>
+              {t('hero.tagline.prefix')} <span>{typed}</span><span className="typed-cursor"></span>
             </p>
 
             <div className="hero-actions">
-              <a href="#contact" className="btn-primary">
-                <Calendar size={16} /> Book a 30-min AI Consultation
+              <a href="#projects" className="btn-primary">
+                <FolderOpen size={16} /> {t('hero.btn.projects')}
               </a>
-              <a href="#openclaude" className="btn-secondary">
-                <Clock size={16} /> See OpenClaude
+              <a href="#capabilities" className="btn-secondary">
+                <LayoutGrid size={16} /> {t('hero.btn.skills')}
               </a>
             </div>
 
             <div className="hero-meta">
               {HERO_STATS.map((s) => (
-                <div className="hero-stat" key={s.label}>
+                <div className="hero-stat" key={s.labelKey}>
                   <span className="hero-stat-number">{s.number}</span>
-                  <span className="hero-stat-label">{s.label}</span>
+                  <span className="hero-stat-label">{t(s.labelKey)}</span>
                 </div>
               ))}
             </div>
@@ -246,7 +237,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="scroll-indicator">
-          <span>scroll</span>
+          <span>{t('hero.scroll')}</span>
           <ArrowDown size={16} />
         </div>
       </section>
@@ -258,32 +249,32 @@ const App: React.FC = () => {
         <div className="container">
           <div className="about-grid">
             <div>
-              <span className="placeholder-note">Placeholder — add your photo</span>
+              <span className="placeholder-note">{t('about.photo.note')}</span>
               <div className="about-photo-placeholder">
                 {PROFILE_PHOTO ? (
-                  <img src={PROFILE_PHOTO} alt="Marcos Fouyer" />
+                  <img src={PROFILE_PHOTO} alt="Erik Fouyer" />
                 ) : (
                   <>
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                     </svg>
-                    <span>Marcos Fouyer</span>
-                    <span style={{ fontSize: '10px', color: 'var(--amber)', opacity: 0.6 }}>Defina PROFILE_PHOTO no topo do App.tsx</span>
+                    <span>Erik Fouyer</span>
+                    <span style={{ fontSize: '10px', color: 'var(--amber)', opacity: 0.6 }}>{t('about.photo.replace')}</span>
                   </>
                 )}
               </div>
             </div>
 
             <div>
-              <span className="section-label">About</span>
-              <FadeUp><h2>Three acts.<br />One clear direction.</h2></FadeUp>
+              <span className="section-label">{t('about.label')}</span>
+              <FadeUp><h2>{t('about.h2.line1')}<br />{t('about.h2.line2')}</h2></FadeUp>
 
               <div className="about-acts">
                 {ABOUT_ACTS.map((act, i) => (
-                  <FadeUp className="about-act" delay={0.1 * (i + 1)} key={act.label}>
-                    <div className="about-act-label">{act.label}</div>
-                    <h3>{act.title}</h3>
-                    <p>{act.body}</p>
+                  <FadeUp className="about-act" delay={0.1 * (i + 1)} key={act.labelKey}>
+                    <div className="about-act-label">{t(act.labelKey)}</div>
+                    <h3>{t(act.titleKey)}</h3>
+                    <p>{t(act.bodyKey)}</p>
                   </FadeUp>
                 ))}
               </div>
@@ -298,25 +289,21 @@ const App: React.FC = () => {
       <section id="openclaude">
         <div className="container">
           <div className="flagship-header">
-            <span className="section-label">Flagship Project</span>
-            <FadeUp><h2>OpenClaude — A Multi-Agent<br />AI System in Production</h2></FadeUp>
+            <span className="section-label">{t('oc.label')}</span>
+            <FadeUp><h2>{t('oc.h2.line1')}<br />{t('oc.h2.line2')}</h2></FadeUp>
             <FadeUp delay={0.1}>
-              <p className="lead">
-                A fully self-hosted orchestration framework built from scratch. Six specialised AI agents, a persistent
-                memory layer, multi-channel communication, and autonomous task execution — running continuously on a
-                single Ubuntu server.
-              </p>
+              <p className="lead">{t('oc.lead')}</p>
             </FadeUp>
             <FadeUp delay={0.2}>
               <div className="flagship-meta">
-                {FLAGSHIP_TAGS.map((t) => <span className="flagship-tag" key={t}>{t}</span>)}
+                {FLAGSHIP_TAG_KEYS.map((k) => <span className="flagship-tag" key={k}>{t(k)}</span>)}
               </div>
             </FadeUp>
           </div>
 
           <FadeUp>
             <div className="diagram-wrapper">
-              <div className="diagram-title"><span>OpenClaude — System Architecture</span></div>
+              <div className="diagram-title"><span>{t('oc.diagram.title')}</span></div>
               <div className="diagram-svg-wrap" dangerouslySetInnerHTML={{ __html: openClaudeDiagram }} />
             </div>
           </FadeUp>
@@ -325,8 +312,8 @@ const App: React.FC = () => {
             {FLAGSHIP_DETAILS.map((d, i) => (
               <FadeUp className="flagship-detail-card" delay={0.1 * i} key={d.icon}>
                 <div className="card-icon">{d.icon}</div>
-                <h4>{d.title}</h4>
-                <p>{d.body}</p>
+                <h4>{t(d.titleKey)}</h4>
+                <p>{t(d.bodyKey)}</p>
               </FadeUp>
             ))}
           </div>
@@ -338,11 +325,10 @@ const App: React.FC = () => {
       {/* ─── Other Projects (DINÂMICO — PocketBase) ─── */}
       <section id="projects">
         <div className="container">
-          <span className="section-label">Other Projects</span>
-          <FadeUp><h2>Automations, tools<br />and applied experiments.</h2></FadeUp>
+          <span className="section-label">{t('proj.label')}</span>
+          <FadeUp><h2>{t('proj.h2.line1')}<br />{t('proj.h2.line2')}</h2></FadeUp>
           <FadeUp delay={0.1}>
-            <p className="lead">Things built outside of OpenClaude — tools for real problems, automations that run daily,
-              and ideas turned into working systems.</p>
+            <p className="lead">{t('proj.lead')}</p>
           </FadeUp>
 
           <div className="projects-grid">
@@ -353,7 +339,7 @@ const App: React.FC = () => {
                 <FadeUp className="project-card" delay={0.1 * (i % 3)} key={project.id || i}>
                   <div className="project-status">
                     <span className={`status-dot ${isLive ? 'live' : 'wip'}`}></span>
-                    <span>{isLive ? 'Live' : 'Em desenvolvimento'}</span>
+                    <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
                   </div>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
@@ -372,7 +358,7 @@ const App: React.FC = () => {
               );
             }) : (
               <p style={{ color: 'var(--text-muted)', gridColumn: '1 / -1' }}>
-                Nenhum projeto destacado no momento. Adicione projetos pelo painel admin e marque “Destacar”.
+                {t('proj.empty')}
               </p>
             )}
           </div>
@@ -384,10 +370,10 @@ const App: React.FC = () => {
       {/* ─── Capabilities (DINÂMICO — skills do PocketBase) ─── */}
       <section id="capabilities">
         <div className="container">
-          <span className="section-label">What I Deliver</span>
-          <FadeUp><h2>Capabilities — in business language.</h2></FadeUp>
+          <span className="section-label">{t('cap.label')}</span>
+          <FadeUp><h2>{t('cap.h2')}</h2></FadeUp>
           <FadeUp delay={0.1}>
-            <p className="lead">Not a list of tools. A description of the problems I help organisations solve.</p>
+            <p className="lead">{t('cap.lead')}</p>
           </FadeUp>
 
           <div className="capabilities-grid">
@@ -406,7 +392,7 @@ const App: React.FC = () => {
             }) : (
               <div className="capability-item" style={{ gridColumn: '1 / -1' }}>
                 <p style={{ color: 'var(--text-muted)' }}>
-                  Nenhuma especialidade destacada. Adicione skills pelo painel admin e marque “Destacar”.
+                  {t('cap.empty')}
                 </p>
               </div>
             )}
@@ -419,19 +405,19 @@ const App: React.FC = () => {
       {/* ─── Credentials ─── */}
       <section id="credentials">
         <div className="container">
-          <span className="section-label">Credentials</span>
-          <FadeUp><h2>Earned, studying,<br />and on the roadmap.</h2></FadeUp>
+          <span className="section-label">{t('cred.label')}</span>
+          <FadeUp><h2>{t('cred.h2.line1')}<br />{t('cred.h2.line2')}</h2></FadeUp>
 
           <div className="credentials-split">
             <div className="cred-section">
-              <h3>Certifications</h3>
+              <h3>{t('cred.certs.title')}</h3>
               <div className="cred-list">
                 {CERTIFICATIONS.map((c, i) => (
-                  <FadeUp className="cred-item" delay={0.1 * i} key={c.title}>
+                  <FadeUp className="cred-item" delay={0.1 * i} key={c.titleKey}>
                     <div className="cred-icon">{c.tag}</div>
                     <div className="cred-body">
-                      <strong>{c.title} <span className={`cred-status ${c.status}`}>{c.statusLabel}</span></strong>
-                      <span>{c.desc}</span>
+                      <strong>{t(c.titleKey)} <span className={`cred-status ${c.status}`}>{t(c.statusKey)}</span></strong>
+                      <span>{t(c.descKey)}</span>
                     </div>
                   </FadeUp>
                 ))}
@@ -439,7 +425,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="cred-section">
-              <h3>Learning Roadmap</h3>
+              <h3>{t('cred.roadmap.title')}</h3>
               <div className="roadmap-list">
                 {ROADMAP.map((r, i) => (
                   <FadeUp className="roadmap-item" delay={0.1 * i} key={r.cert}>
@@ -460,45 +446,44 @@ const App: React.FC = () => {
       <section id="contact">
         <div className="container">
           <div className="contact-inner">
-            <span className="section-label" style={{ textAlign: 'center' }}>Get in touch</span>
-            <FadeUp><h2>Ready to talk about<br />your AI roadmap?</h2></FadeUp>
+            <span className="section-label" style={{ textAlign: 'center' }}>{t('contact.label')}</span>
+            <FadeUp><h2>{t('contact.h2.line1')}<br />{t('contact.h2.line2')}</h2></FadeUp>
             <FadeUp delay={0.1}>
-              <p>I work with Australian companies that want to move from AI curiosity to AI operations.
-                A 30-minute conversation is enough to know if there's a fit.</p>
+              <p>{t('contact.p')}</p>
             </FadeUp>
 
             {submitted ? (
               <div className="contact-success">
-                <h3>Mensagem enviada ✦</h3>
+                <h3>{t('contact.success.title')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>
-                  Obrigado pelo contato — vou responder o mais breve possível.
+                  {t('contact.success.p')}
                 </p>
-                <button className="btn-primary" onClick={() => setSubmitted(false)}>Enviar outra mensagem</button>
+                <button className="btn-primary" onClick={() => setSubmitted(false)}>{t('contact.success.again')}</button>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleContactSubmit}>
                 <input
-                  type="text" placeholder="Your name" required
+                  type="text" placeholder={t('contact.field.name')} required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
                 <input
-                  type="email" placeholder="Your email" required
+                  type="email" placeholder={t('contact.field.email')} required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
                 <textarea
-                  rows={4} placeholder="Tell me about your project or AI challenge" required
+                  rows={4} placeholder={t('contact.field.message')} required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 ></textarea>
                 <button type="submit" disabled={isSubmitting} className="btn-primary">
-                  {isSubmitting ? 'Sending…' : 'Send message'} <Send size={16} />
+                  {isSubmitting ? t('contact.btn.sending') : t('contact.btn.send')} <Send size={16} />
                 </button>
               </form>
             )}
 
-            <div className="contact-divider">or reach out directly</div>
+            <div className="contact-divider">{t('contact.divider')}</div>
 
             <p className="contact-email">
               <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
@@ -511,13 +496,13 @@ const App: React.FC = () => {
       <footer>
         <div className="container">
           <div className="footer-inner">
-            <div className="footer-logo">Marcos Fouyer<span> — AI Systems Architect</span></div>
+            <div className="footer-logo">Erik Fouyer<span>{t('footer.logo.suffix')}</span></div>
             <ul className="footer-links">
               <li><a href="#" title="LinkedIn"><Linkedin size={15} /> LinkedIn</a></li>
               <li><a href="#" title="GitHub"><Github size={15} /> GitHub</a></li>
               <li><a href={`mailto:${CONTACT_EMAIL}`} title="Email"><Mail size={15} /> Email</a></li>
             </ul>
-            <div className="footer-copy">Built with intention — Lisbon, 2026</div>
+            <div className="footer-copy">{t('footer.copy')}</div>
           </div>
         </div>
       </footer>

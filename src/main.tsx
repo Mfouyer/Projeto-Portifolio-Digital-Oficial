@@ -13,6 +13,7 @@ import { MessagesAdmin } from './pages/admin/Messages.tsx';
 import { UserLogin } from './pages/auth/Login.tsx';
 import { UserRegister } from './pages/auth/Register.tsx';
 import { AuthProvider } from './contexts/AuthContext.tsx';
+import { LanguageProvider } from './contexts/LanguageContext.tsx';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 import { Profile } from './pages/auth/Profile.tsx';
 
@@ -64,8 +65,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
-      <Toaster position="top-right" toastOptions={{ className: 'glass', style: { color: '#fff', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' } }} />
+      <LanguageProvider>
+        <RouterProvider router={router} />
+        <Toaster position="top-right" toastOptions={{ className: 'glass', style: { color: '#fff', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)' } }} />
+      </LanguageProvider>
     </AuthProvider>
   </StrictMode>,
 )
