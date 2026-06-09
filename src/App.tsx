@@ -123,7 +123,7 @@ function useTypedText(phrases: string[]): string {
    ════════════════════════════════════════════════════════════ */
 
 const App: React.FC = () => {
-  const { t, typed: typedPhrases, lang } = useLanguage();
+  const { t, typed: typedPhrases } = useLanguage();
 
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
@@ -455,7 +455,7 @@ const App: React.FC = () => {
                                   {c.title}{' '}
                                   <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
                                 </strong>
-                                <span>{c[`desc_${lang}`] || c.desc_en}</span>
+                                {/* description field kept in DB but not rendered */}
                               </div>
                             </FadeUp>
                           );

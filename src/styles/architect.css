@@ -879,13 +879,23 @@
 }
 
 .architect-page .cred-group-title {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--amber);
-  margin-bottom: 18px;
+  margin-top: 32px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.architect-page .cred-group:first-child .cred-group-title {
+  margin-top: 0;
 }
 
 .architect-page .cred-list {
