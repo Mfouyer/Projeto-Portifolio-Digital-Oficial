@@ -37,7 +37,7 @@ const HeroMotion: React.FC<{ accent?: string; intensity?: number }> = ({
       `background-image:linear-gradient(${hexA(accent, op)} 1px,transparent 1px),linear-gradient(90deg,${hexA(accent, op)} 1px,transparent 1px);` +
       `background-size:${CELL}px ${CELL}px;` +
       `-webkit-mask-image:${maskCss};mask-image:${maskCss};` +
-      `animation:arch-mgDrift ${Math.max(8, 30 - intensity)}s linear infinite;`;
+      `animation:arch-mgDrift ${Math.max(18, 55 - intensity)}s linear infinite;`;
     root.appendChild(grid);
 
     // 2) Quadrados aleatórios (canvas) acendendo/apagando
@@ -59,13 +59,13 @@ const HeroMotion: React.FC<{ accent?: string; intensity?: number }> = ({
     window.addEventListener('resize', resize);
     cleanups.push(() => window.removeEventListener('resize', resize));
 
-    const maxActive = 6 + intensity * 4;
-    const spawnChance = 0.05 * intensity;
+    const maxActive = 4 + intensity * 2;
+    const spawnChance = 0.018 * intensity;
     const spawn = () => cells.push({
       col: Math.floor(Math.random() * cols),
       row: Math.floor(Math.random() * rows),
       age: 0,
-      life: 800 + Math.random() * 1700,
+      life: 2400 + Math.random() * 3600,
       peak: 0.08 + Math.random() * 0.20,
     });
 

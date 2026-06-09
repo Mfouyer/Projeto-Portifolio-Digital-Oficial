@@ -394,8 +394,16 @@
 
 .architect-page .hero-actions {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 16px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 500px) {
+  .architect-page .hero-actions {
+    flex-wrap: wrap;
+  }
 }
 
 /* botões — sobrescrevem o .btn-primary/.btn-secondary global do App.css */
