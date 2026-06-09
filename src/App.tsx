@@ -48,13 +48,13 @@ const FLAGSHIP_DETAILS = [
 // secção nunca aparece vazia. O status (earned/studying/planned) reaproveita as
 // chaves i18n 'cred.status.*'; a descrição é multilingue (desc_pt/en/es).
 const FALLBACK_CERTIFICATIONS = [
-  { id: 'fb-ai900', tag: 'MS', title: 'Azure AI Fundamentals (AI-900)', status: 'earned',
+  { id: 'fb-ai900', tag: 'MS', title: 'Azure AI Fundamentals (AI-900)', status: 'earned', issuer: 'Microsoft', category: 'ai',
     desc_pt: 'Microsoft — Fundamentos de IA na Azure', desc_en: 'Microsoft — Azure AI fundamentals', desc_es: 'Microsoft — Fundamentos de IA en Azure' },
-  { id: 'fb-vand', tag: 'V', title: 'Agentic AI and AI Agents for Leaders', status: 'earned',
+  { id: 'fb-vand', tag: 'V', title: 'Agentic AI and AI Agents for Leaders', status: 'earned', issuer: 'Vanderbilt University', category: 'ai',
     desc_pt: 'Vanderbilt University — Agentic AI, governança de IA e liderança', desc_en: 'Vanderbilt University — Agentic AI, AI governance and leadership', desc_es: 'Vanderbilt University — Agentic AI, gobernanza de IA y liderazgo' },
-  { id: 'fb-ai103', tag: 'MS', title: 'AI-103: Azure AI App and Agent Developer Associate', status: 'studying',
+  { id: 'fb-ai103', tag: 'MS', title: 'AI-103: Azure AI App and Agent Developer Associate', status: 'studying', issuer: 'Microsoft', category: 'ai',
     desc_pt: 'Microsoft — Sucessora da AI-102: Python + Azure AI Foundry e multi-agentes', desc_en: 'Microsoft — Successor to AI-102: Python + Azure AI Foundry and multi-agent systems', desc_es: 'Microsoft — Sucesora de la AI-102: Python + Azure AI Foundry y multiagentes' },
-  { id: 'fb-psm', tag: 'PSM', title: 'Professional Scrum Master (PSM)', status: 'earned',
+  { id: 'fb-psm', tag: 'PSM', title: 'Professional Scrum Master (PSM)', status: 'earned', issuer: 'Scrum.org', category: 'process',
     desc_pt: 'Scrum.org — Metodologia ágil e facilitação de equipas', desc_en: 'Scrum.org — Agile methodology and team facilitation', desc_es: 'Scrum.org — Metodología ágil y facilitación de equipos' },
 ];
 
@@ -425,17 +425,45 @@ const App: React.FC = () => {
           <div className="credentials-split">
             <div className="cred-section">
               <h3>{t('cred.certs.title')}</h3>
-              <div className="cred-list">
-                {(certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS).map((c, i) => (
-                  <FadeUp className="cred-item" delay={0.1 * i} key={c.id}>
-                    <div className="cred-icon">{c.tag}</div>
-                    <div className="cred-body">
-                      <strong>{c.title} <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span></strong>
-                      <span>{c[`desc_${lang}`] || c.desc_en}</span>
+              {(() => {
+                const certs = certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS;
+                const groups = [
+                  { key: 'ai', titleKey: 'cred.certs.groupAi', items: certs.filter((c) => c.category === 'ai') },
+                  { key: 'other', titleKey: 'cred.certs.groupOther', items: certs.filter((c) => c.category !== 'ai') },
+                ];
+                let idx = 0;
+                return groups
+                  .filter((g) => g.items.length > 0)
+                  .map((g) => (
+                    <div className="cred-group" key={g.key}>
+                      <h4 className="cred-group-title">{t(g.titleKey)}</h4>
+                      <div className="cred-list">
+                        {g.items.map((c) => {
+                          const org = (c.issuer || '').toUpperCase();
+                          // Os nomes oficiais de alguns exames já embebem o órgão
+                          // (ex.: "AB-730: MICROSOFT - ..."); nesses casos não
+                          // duplicamos o prefixo do issuer.
+                          const orgInTitle = org && (c.title || '').toUpperCase().includes(org);
+                          return (
+                            <FadeUp className="cred-item" delay={0.05 * idx++} key={c.id}>
+                              <div className="cred-icon">{c.tag}</div>
+                              <div className="cred-body">
+                                <strong>
+                                  {org && !orgInTitle && (
+                                    <><span className="cred-org">{org}</span>{' - '}</>
+                                  )}
+                                  {c.title}{' '}
+                                  <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
+                                </strong>
+                                <span>{c[`desc_${lang}`] || c.desc_en}</span>
+                              </div>
+                            </FadeUp>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </FadeUp>
-                ))}
-              </div>
+                  ));
+              })()}
             </div>
 
             <div className="cred-section">

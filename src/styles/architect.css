@@ -870,10 +870,34 @@
   border-bottom: 1px solid var(--border);
 }
 
+.architect-page .cred-group {
+  margin-bottom: 32px;
+}
+
+.architect-page .cred-group:last-child {
+  margin-bottom: 0;
+}
+
+.architect-page .cred-group-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 18px;
+}
+
 .architect-page .cred-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.architect-page .cred-org {
+  color: var(--amber);
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .architect-page .cred-item {
