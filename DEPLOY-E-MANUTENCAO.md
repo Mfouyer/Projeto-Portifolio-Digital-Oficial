@@ -41,7 +41,7 @@ atrito. Feito sob medida para o teu stack: **SPA Vite/React → estático**,
 
 ### 2. Backend público (obrigatório para site público)
 O front é client-side: o **browser do visitante** chama o PocketBase direto.
-Um IP de LAN (`192.168.1.191:8091`) só funciona em casa. Então:
+Um IP de LAN (`192.168.x.x:8091`) só funciona em casa. Então:
 - Exponha o PocketBase num hostname público, ex.: `pb.seu-dominio.com`
   (Cloudflare Zero Trust → Tunnels → Public Hostnames → aponta para `localhost:8091`).
 - No **CORS do PocketBase**, libere a origem do front, ex.: `https://portfolio.seu-dominio.com`.

@@ -2,7 +2,7 @@ import PocketBase from 'pocketbase';
 
 // Backend URL: injected at build time via Vite env (VITE_PB_URL).
 // Falls back to the local instance for dev / LAN use.
-const PB_URL = import.meta.env.VITE_PB_URL || 'http://192.168.1.191:8091';
+const PB_URL = import.meta.env.VITE_PB_URL || 'http://localhost:8091';
 export const pb = new PocketBase(PB_URL);
 
 // Se quiser que o logout ocorra ao fechar o browser, podemos usar sessionStorage

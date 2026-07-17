@@ -12,7 +12,7 @@ Frontend **client-side puro**: o browser do visitante fala **diretamente** com o
 Não há servidor/proxy intermédio. Isto é o facto que define todo o deploy (ver §4).
 
 - **Fonte:** `~/.claude/deliverables/portfolio-resgatado/`
-- **Backend:** PocketBase já LIVE em `http://192.168.1.191:8091` (container `pocketbase-okc0oog0w8s48cs4owwokooc`, porta host 8091→8080). Saudável ✓.
+- **Backend:** PocketBase já LIVE em `http://192.168.x.x:8091` (container PocketBase, porta host 8091→8080). Saudável ✓.
 - **Coleções:** `skills` (read público ✓), `projects` (read público ✓), `messages` (create público ✓ — formulário de contacto), `users` + admin auth para o painel `/admin`.
 
 ## 2. Build canónico (VALIDADO pela Aura)
@@ -28,7 +28,7 @@ VITE_PB_URL="<URL_PUBLICO_DO_BACKEND>" npm run build   # gera dist/
 - **Provado:** o `VITE_PB_URL` é injetado no build. Build de teste com `https://pb.erik-lapadula.com` → o URL ficou no bundle e o IP local **desapareceu**.
 
 ### Alterações de código feitas pela Aura (já aplicadas na fonte)
-1. `src/lib/pocketbase.ts` — URL deixou de ser hardcoded; agora `import.meta.env.VITE_PB_URL || 'http://192.168.1.191:8091'`.
+1. `src/lib/pocketbase.ts` — URL deixou de ser hardcoded; agora `import.meta.env.VITE_PB_URL || 'http://localhost:8091'`.
 2. `src/lib/pocketbase.ts` — removidos params não usados num callback (bloqueavam o `tsc` estrito).
 3. Adicionado `.env.example` a documentar `VITE_PB_URL`.
 
@@ -45,7 +45,7 @@ Padrão do ecossistema = container liga a `127.0.0.1:PORT` e o **Cloudflare Tunn
 ## 4. ⚠️ PONTO CRÍTICO — o backend tem de ser público
 
 Como é SPA client-side, o browser do visitante chama o `VITE_PB_URL` diretamente.
-Um IP de LAN (`192.168.1.191:8091`) **só funciona dentro de casa**. Para um portfolio
+Um IP de LAN (`192.168.x.x:8091`) **só funciona dentro de casa**. Para um portfolio
 público na internet, o **PocketBase também precisa de um URL público** — senão skills/projects
 aparecem vazios e o formulário de contacto falha para qualquer visitante externo.
 
