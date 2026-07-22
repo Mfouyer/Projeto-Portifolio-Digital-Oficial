@@ -17,7 +17,7 @@ export const I18N: Record<Lang, Dict> = {
   pt: {
     'meta.title': 'Erik Fouyer — AI Transformation Lead',
     'meta.desc':
-      'Construo, governo e opero sistemas multi-agente de IA em produção. AI Transformation Lead baseado em Lisboa, consultor para empresas australianas.',
+      'Construo, governo e opero sistemas multi-agente de IA em produção. AI Transformation Lead baseado em Lisboa, ajudo organizações a transformar processos com IA e a gerar resultados mensuráveis.',
 
     'nav.about': 'Sobre',
     'nav.openclaude': 'OpenClaude',
@@ -45,7 +45,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.label': 'Ato I — O Operador',
     'about.act1.h3': 'Construído para escalar desde o primeiro dia.',
     'about.act1.p':
-      'Ao longo de mais de 15 anos na MEO — uma das maiores operadoras de telecomunicações de Portugal — geri governança Scrum e operações de serviço à escala empresarial. Sei o que quebra em volume, o que o negócio realmente precisa e como pôr equipas multifuncionais a remar na mesma direção. Essa disciplina operacional é a base sobre a qual tudo o resto assenta.',
+      'Mais de 15 anos em operações de IT e gestão de serviços à escala empresarial — os últimos na MEO, uma das maiores operadoras de telecomunicações de Portugal, onde lidero qualidade e a transformação de processos manuais com IA e Power Platform. Antes, no Brasil, geri equipas de mais de 500 profissionais e contratos de alta complexidade para clientes como Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo e Airbus, entre outros. Domino a complexidade das operações de grande escala, compreendo as reais necessidades do negócio e sei alinhar equipas multifuncionais em torno de objetivos comuns — uma disciplina operacional que constitui o alicerce de tudo o que construo hoje.',
     'about.act2.label': 'Ato II — O Construtor',
     'about.act2.h3': 'De usar ferramentas de IA a operar sistemas de IA.',
     'about.act2.p':
@@ -53,7 +53,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act3.label': 'Ato III — O Consultor',
     'about.act3.h3': 'Pronto para levar este playbook à sua organização.',
     'about.act3.p':
-      'Estou agora disponível para empresas australianas que querem passar de experiências com IA a operações de IA. Ajudo equipas a desenhar arquiteturas de agentes, implementar frameworks de governança e construir sistemas que não apenas impressionam numa demo — funcionam de forma fiável em produção.',
+      'Estou agora disponível para levar a minha experiência em gestão de processos e projetos, potenciada pela adoção de IA, a organizações que procuram aumentar a eficiência, eliminar desperdícios e ligar o negócio à operação — gerando resultados mensuráveis e alcançáveis. Ajudo equipas a desenhar arquiteturas de agentes, implementar frameworks de governança e construir sistemas que não apenas impressionam numa demo, mas funcionam de forma fiável em produção.',
 
     'oc.label': 'Projeto Principal',
     'oc.h2.line1': 'OpenClaude — Um Sistema Multi-Agente',
@@ -115,7 +115,7 @@ export const I18N: Record<Lang, Dict> = {
     'contact.h2.line1': 'Pronto para falar sobre',
     'contact.h2.line2': 'o seu roadmap de IA?',
     'contact.p':
-      'Trabalho com empresas australianas que querem passar da curiosidade sobre IA às operações de IA. Uma conversa de 30 minutos é suficiente para saber se há encaixe.',
+      'Trabalho com organizações que querem passar da curiosidade sobre IA às operações de IA. Uma conversa de 30 minutos é suficiente para saber se há encaixe.',
     'contact.field.name': 'O seu nome',
     'contact.field.email': 'O seu email',
     'contact.field.message': 'Fale-me do seu projeto ou desafio de IA',
@@ -143,7 +143,7 @@ export const I18N: Record<Lang, Dict> = {
   en: {
     'meta.title': 'Erik Fouyer — AI Transformation Lead',
     'meta.desc':
-      'I build, govern and operate multi-agent AI systems in production. AI Transformation Lead based in Lisbon, consulting for Australian enterprises.',
+      'I build, govern and operate multi-agent AI systems in production. AI Transformation Lead based in Lisbon, helping organizations transform processes with AI and deliver measurable results.',
 
     'nav.about': 'About',
     'nav.openclaude': 'OpenClaude',
@@ -171,7 +171,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.label': 'Act I — The Operator',
     'about.act1.h3': 'Built for scale from day one.',
     'about.act1.p':
-      "Over 15 years at MEO — one of Portugal's largest telecoms — I ran Scrum governance and enterprise-scale service operations. I know what breaks at volume, what the business actually needs, and how to get cross-functional teams moving in the same direction. That operational discipline is the foundation everything else sits on.",
+      "More than 15 years in IT operations and service management at enterprise scale — most recently at MEO, one of Portugal's largest telecoms, where I lead quality and the transformation of manual processes with AI and the Power Platform. Before that, in Brazil, I ran teams of over 500 professionals and high-complexity contracts for clients such as Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo and Airbus, among others. I master the complexity of large-scale operations, understand what the business truly needs, and know how to align cross-functional teams around shared goals — an operational discipline that forms the foundation of everything I build today.",
     'about.act2.label': 'Act II — The Builder',
     'about.act2.h3': 'From using AI tools to running AI systems.',
     'about.act2.p':
@@ -179,7 +179,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act3.label': 'Act III — The Consultant',
     'about.act3.h3': 'Ready to bring this playbook to your organisation.',
     'about.act3.p':
-      "I'm now available to Australian companies looking to move from AI experiments to AI operations. I help teams design agent architectures, implement governance frameworks, and build systems that don't just demo well — they run reliably in production.",
+      "I'm now available to bring my expertise in process and project management, powered by AI adoption, to organizations looking to increase efficiency, eliminate waste, and connect the business to its operations — delivering measurable, attainable results. I help teams design agent architectures, implement governance frameworks, and build systems that don't just demo well, but run reliably in production.",
 
     'oc.label': 'Flagship Project',
     'oc.h2.line1': 'OpenClaude — A Multi-Agent',
@@ -241,7 +241,7 @@ export const I18N: Record<Lang, Dict> = {
     'contact.h2.line1': 'Ready to talk about',
     'contact.h2.line2': 'your AI roadmap?',
     'contact.p':
-      "I work with Australian companies that want to move from AI curiosity to AI operations. A 30-minute conversation is enough to know if there's a fit.",
+      "I work with organizations that want to move from AI curiosity to AI operations. A 30-minute conversation is enough to know if there's a fit.",
     'contact.field.name': 'Your name',
     'contact.field.email': 'Your email',
     'contact.field.message': 'Tell me about your project or AI challenge',
@@ -269,7 +269,7 @@ export const I18N: Record<Lang, Dict> = {
   es: {
     'meta.title': 'Erik Fouyer — AI Transformation Lead',
     'meta.desc':
-      'Construyo, gobierno y opero sistemas multiagente de IA en producción. AI Transformation Lead con base en Lisboa, consultor para empresas australianas.',
+      'Construyo, gobierno y opero sistemas multiagente de IA en producción. AI Transformation Lead con base en Lisboa, ayudo a organizaciones a transformar procesos con IA y generar resultados medibles.',
 
     'nav.about': 'Sobre mí',
     'nav.openclaude': 'OpenClaude',
@@ -297,7 +297,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.label': 'Acto I — El Operador',
     'about.act1.h3': 'Construido para escalar desde el primer día.',
     'about.act1.p':
-      'Durante más de 15 años en MEO — una de las mayores operadoras de telecomunicaciones de Portugal — dirigí la gobernanza Scrum y operaciones de servicio a escala empresarial. Sé qué se rompe en volumen, qué necesita realmente el negocio y cómo lograr que equipos multifuncionales avancen en la misma dirección. Esa disciplina operativa es la base sobre la que se apoya todo lo demás.',
+      'Más de 15 años en operaciones de IT y gestión de servicios a escala empresarial — los últimos en MEO, una de las mayores operadoras de telecomunicaciones de Portugal, donde lidero calidad y la transformación de procesos manuales con IA y Power Platform. Antes, en Brasil, dirigí equipos de más de 500 profesionales y contratos de alta complejidad para clientes como Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo y Airbus, entre otros. Domino la complejidad de las operaciones a gran escala, comprendo las necesidades reales del negocio y sé alinear equipos multifuncionales en torno a objetivos comunes — una disciplina operativa que constituye la base de todo lo que construyo hoy.',
     'about.act2.label': 'Acto II — El Constructor',
     'about.act2.h3': 'De usar herramientas de IA a operar sistemas de IA.',
     'about.act2.p':
@@ -305,7 +305,7 @@ export const I18N: Record<Lang, Dict> = {
     'about.act3.label': 'Acto III — El Consultor',
     'about.act3.h3': 'Listo para llevar este playbook a tu organización.',
     'about.act3.p':
-      'Ahora estoy disponible para empresas australianas que quieren pasar de experimentos con IA a operaciones de IA. Ayudo a equipos a diseñar arquitecturas de agentes, implementar marcos de gobernanza y construir sistemas que no solo lucen bien en una demo — funcionan de forma fiable en producción.',
+      'Ahora estoy disponible para llevar mi experiencia en gestión de procesos y proyectos, impulsada por la adopción de IA, a organizaciones que buscan aumentar la eficiencia, eliminar desperdicios y conectar el negocio con la operación — generando resultados medibles y alcanzables. Ayudo a equipos a diseñar arquitecturas de agentes, implementar marcos de gobernanza y construir sistemas que no solo lucen bien en una demo, sino que funcionan de forma fiable en producción.',
 
     'oc.label': 'Proyecto Insignia',
     'oc.h2.line1': 'OpenClaude — Un Sistema Multiagente',
@@ -367,7 +367,7 @@ export const I18N: Record<Lang, Dict> = {
     'contact.h2.line1': '¿Listo para hablar sobre',
     'contact.h2.line2': 'tu roadmap de IA?',
     'contact.p':
-      'Trabajo con empresas australianas que quieren pasar de la curiosidad por la IA a las operaciones de IA. Una conversación de 30 minutos es suficiente para saber si hay encaje.',
+      'Trabajo con organizaciones que quieren pasar de la curiosidad por la IA a las operaciones de IA. Una conversación de 30 minutos es suficiente para saber si hay encaje.',
     'contact.field.name': 'Tu nombre',
     'contact.field.email': 'Tu email',
     'contact.field.message': 'Cuéntame sobre tu proyecto o desafío de IA',

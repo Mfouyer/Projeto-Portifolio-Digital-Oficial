@@ -356,7 +356,7 @@ const App: React.FC = () => {
                     <span className={`status-dot ${isLive ? 'live' : 'wip'}`}></span>
                     <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
                   </div>
-                  <h3>{project.title}</h3>
+                  <h3>{project[`title_${lang}`] || project.title_en || project.title}</h3>
                   <p>{project[`description_${lang}`] || project.description_en || project.description}</p>
                   {tags.length > 0 && (
                     <div className="project-tags">
@@ -400,8 +400,8 @@ const App: React.FC = () => {
                     <span className="capability-number">{String(i + 1).padStart(2, '0')} —</span>
                     <span className="capability-icon"><IconComp size={18} /></span>
                   </div>
-                  <h3>{skill.title}</h3>
-                  <p>{skill.description}</p>
+                  <h3>{skill[`title_${lang}`] || skill.title_en || skill.title}</h3>
+                  <p>{skill[`description_${lang}`] || skill.description_en || skill.description}</p>
                 </div>
               );
             }) : (
