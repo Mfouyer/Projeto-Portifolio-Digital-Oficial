@@ -10,6 +10,7 @@ import { openClaudeDiagram } from './components/OpenClaudeDiagram';
 import HeroMotion from './components/HeroMotion';
 import LangSwitcher from './components/LangSwitcher';
 import { useLanguage } from './contexts/LanguageContext';
+import profilePhoto from './assets/marcos-fouyer.jpg';
 import './App.css';
 import './styles/architect.css';
 
@@ -69,7 +70,7 @@ const CONTACT_EMAIL = 'marcos.fouyer@gmail.com';
 
 // Foto do "About": coloque o caminho da imagem (ex.: '/marcos.jpg' em public/,
 // ou importe de ./assets). Deixe '' para manter o placeholder.
-const PROFILE_PHOTO = '';
+const PROFILE_PHOTO = profilePhoto;
 
 /* ════════════════════════════════════════════════════════════
    HELPERS
@@ -123,7 +124,7 @@ function useTypedText(phrases: string[]): string {
    ════════════════════════════════════════════════════════════ */
 
 const App: React.FC = () => {
-  const { t, typed: typedPhrases } = useLanguage();
+  const { t, typed: typedPhrases, lang } = useLanguage();
 
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
@@ -266,13 +267,13 @@ const App: React.FC = () => {
               <span className="placeholder-note">{t('about.photo.note')}</span>
               <div className="about-photo-placeholder">
                 {PROFILE_PHOTO ? (
-                  <img src={PROFILE_PHOTO} alt="Erik Fouyer" />
+                  <img src={PROFILE_PHOTO} alt="Marcos Fouyer" />
                 ) : (
                   <>
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
                     </svg>
-                    <span>Erik Fouyer</span>
+                    <span>Marcos Fouyer</span>
                     <span style={{ fontSize: '10px', color: 'var(--amber)', opacity: 0.6 }}>{t('about.photo.replace')}</span>
                   </>
                 )}
@@ -356,7 +357,7 @@ const App: React.FC = () => {
                     <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
                   </div>
                   <h3>{project.title}</h3>
-                  <p>{project.description}</p>
+                  <p>{project[`description_${lang}`] || project.description_en || project.description}</p>
                   {tags.length > 0 && (
                     <div className="project-tags">
                       {tags.map((tag: string) => <span className="tag" key={tag}>{tag}</span>)}
