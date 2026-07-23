@@ -1229,43 +1229,28 @@
 }
 
 .architect-page .cred-status {
-  /* inline-block é ESSENCIAL: num <span> inline o transform/scale é ignorado
-     e o box-shadow renderiza recortado — por isso o pulsar não se via */
-  display: inline-block;
-  transform-origin: center;
+  /* Sem "chip": fundo, padding, caixa e glow removidos a pedido do Marcos.
+     Fica só o texto colorido, discreto, ao lado do título da certificação. */
+  display: inline;
   font-family: var(--mono);
-  font-size: 7.5px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
+  font-size: 6.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  border-radius: 3px;
-  padding: 2px 5px;
   margin-left: 6px;
-  /* glow pulsante: cada estado pulsa na sua própria cor semântica (override por variante) */
-  --cred-glow: rgba(217,119,6,0.4);
   animation: cred-status-pulse 3.2s ease-in-out infinite;
-  will-change: box-shadow, opacity, transform, filter;
+  will-change: opacity;
 }
 
-/* Pulsar suave: oscila entre 0.65→1.0, scale mínimo, glow contido */
+/* Pulsar discreto: só uma leve variação de opacidade (sem glow/scale — já não há caixa). */
 @keyframes cred-status-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 var(--cred-glow);
-    opacity: 0.65;
-    transform: scale(1);
-    filter: brightness(0.95);
-  }
-  50% {
-    box-shadow: 0 0 6px 1px var(--cred-glow);
-    opacity: 1;
-    transform: scale(1.03);
-    filter: brightness(1.12);
-  }
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
-.architect-page .cred-status.earned { background: rgba(34,197,94,0.12); color: #22C55E; --cred-glow: rgba(34,197,94,0.42); }
-.architect-page .cred-status.studying { background: rgba(217,119,6,0.12); color: var(--amber); --cred-glow: rgba(217,119,6,0.45); }
-.architect-page .cred-status.planned { background: var(--surface2); color: var(--text-dim); --cred-glow: rgba(148,163,184,0.3); }
+.architect-page .cred-status.earned { color: #22C55E; }
+.architect-page .cred-status.studying { color: var(--amber); }
+.architect-page .cred-status.planned { color: var(--text-dim); }
 
 /* Acessibilidade: desativa o pulsar para quem prefere menos movimento */
 @media (prefers-reduced-motion: reduce) {
