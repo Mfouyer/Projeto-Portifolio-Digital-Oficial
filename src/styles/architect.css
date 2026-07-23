@@ -1119,8 +1119,18 @@
   line-height: 1.65;
 }
 
-/* ─── Credentials ─── */
-.architect-page #credentials { background: var(--surface); }
+/* ─── Credentials (embutidas na coluna da foto, após about-photo) ─── */
+.architect-page .about-credentials {
+  margin-top: 40px;
+}
+
+.architect-page .about-cred-h2 {
+  font-size: clamp(16px, 2vw, 22px);
+  margin-bottom: 20px;
+}
+
+/* Mantém compatibilidade: a rule antiga de #credentials não é mais necessária,
+   mas deixamos o fallback para o caso de o ID ser ativado por nav */
 
 .architect-page .credentials-split {
   display: grid;
