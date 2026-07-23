@@ -799,6 +799,241 @@
   padding: 3px 8px;
 }
 
+/* ─── Project card redesign ─── */
+
+/* Ao expandir, o card ocupa toda a largura da grelha */
+.architect-page .project-card--redesign {
+  padding: 0;
+  gap: 0;
+  cursor: default;
+  /* sobrescreve o transform do hover no estado base */
+}
+
+.architect-page .project-card--expanded {
+  grid-column: 1 / -1;
+  border-color: rgba(217,119,6,0.45);
+}
+
+/* Topo do card: capa clicável */
+.architect-page .project-card__header {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área da capa */
+.architect-page .project-card__cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  flex-shrink: 0;
+}
+
+.architect-page .project-card__cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.architect-page .project-card--redesign:hover .project-card__cover-img {
+  transform: scale(1.03);
+}
+
+/* Placeholder com gradiente + iniciais */
+.architect-page .project-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.3s;
+}
+
+.architect-page .project-card--redesign:hover .project-card__placeholder {
+  filter: brightness(1.12);
+}
+
+.architect-page .project-card__initials {
+  font-family: var(--mono);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: rgba(217,119,6,0.55);
+  letter-spacing: 0.08em;
+  user-select: none;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+}
+
+/* Badge de status sobre a capa */
+.architect-page .project-card__status-badge {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: rgba(10,10,11,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 10px;
+}
+
+/* Seta de expansão */
+.architect-page .project-card__expand-icon {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  background: rgba(10,10,11,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color 0.2s, border-color 0.2s, transform 0.25s;
+}
+
+.architect-page .project-card__expand-icon.open {
+  color: var(--amber);
+  border-color: rgba(217,119,6,0.4);
+}
+
+.architect-page .project-card--redesign:hover .project-card__expand-icon {
+  color: var(--amber);
+}
+
+/* Área de meta: nome + teaser + tags */
+.architect-page .project-card__meta {
+  padding: 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.architect-page .project-card__meta h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.architect-page .project-card__teaser {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Corpo expandido */
+.architect-page .project-card__body-inner {
+  padding: 0 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.architect-page .project-card__description {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Galeria */
+.architect-page .project-card__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.architect-page .project-card__gallery-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.architect-page .project-card__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.architect-page .project-card__thumb-link {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, transform 0.2s;
+  aspect-ratio: 4 / 3;
+}
+
+.architect-page .project-card__thumb-link:hover {
+  border-color: rgba(217,119,6,0.5);
+  transform: scale(1.03);
+}
+
+.architect-page .project-card__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Footer do card expandido: links + botão fechar */
+.architect-page .project-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.architect-page .project-card__close {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.architect-page .project-card__close:hover {
+  color: var(--text);
+  border-color: rgba(217,119,6,0.35);
+}
+
+/* Responsive: galeria com mais colunas em desktop expandido */
+@media (min-width: 769px) {
+  .architect-page .project-card--expanded .project-card__gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .architect-page .project-card--expanded .project-card__cover {
+    aspect-ratio: 21 / 6;
+  }
+}
+
 /* ─── Capabilities (skills do PocketBase) ─── */
 .architect-page #capabilities { background: var(--bg); }
 

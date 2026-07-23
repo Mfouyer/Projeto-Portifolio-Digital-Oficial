@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Shield, ArrowDown, Github, Linkedin, Mail,
@@ -132,6 +132,8 @@ const App: React.FC = () => {
   const [roadmap, setRoadmap] = React.useState<any[]>([]);
   const [navOpen, setNavOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+
+  const [expandedId, setExpandedId] = React.useState<string | null>(null);
 
   const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -349,26 +351,171 @@ const App: React.FC = () => {
           <div className="projects-grid">
             {projects.length > 0 ? projects.map((project, i) => {
               const isLive = !!project.link;
-              const tags = project.tags ? String(project.tags).split(',').map((t: string) => t.trim()).filter(Boolean) : [];
+              const tags = project.tags ? String(project.tags).split(',').map((tag: string) => tag.trim()).filter(Boolean) : [];
+              const title = project[`title_${lang}`] || project.title_en || project.title || '';
+              const teaser = project[`teaser_${lang}`] || project.teaser_en || '';
+              const description = project[`description_${lang}`] || project.description_en || project.description || '';
+              const isExpanded = expandedId === project.id;
+
+              // Iniciais para o placeholder (máx 2 chars)
+              const initials = title
+                .split(/[\s\-_]+/)
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((w: string) => w[0].toUpperCase())
+                .join('');
+
+              // Imagens de evidência
+              const evidenceRaw = project.evidence;
+              const evidenceFiles: string[] = Array.isArray(evidenceRaw) && evidenceRaw.length > 0
+                ? evidenceRaw
+                : [];
+              const buildEvidenceUrl = (filename: string) =>
+                `https://pb.mfouyer.com/api/files/${project.collectionId}/${project.id}/${filename}`;
+
+              // URL da capa (campo cover_image — nome do ficheiro)
+              const coverFile: string = project.cover_image || '';
+              const coverUrl = coverFile
+                ? `https://pb.mfouyer.com/api/files/${project.collectionId}/${project.id}/${coverFile}`
+                : '';
+
+              // Paleta de gradientes para o placeholder — distribuída por índice
+              const PLACEHOLDERS = [
+                'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+                'linear-gradient(135deg, #1a1206 0%, #2d1f00 50%, #3d2800 100%)',
+                'linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1c2128 100%)',
+                'linear-gradient(135deg, #0a0a1a 0%, #111130 50%, #1a1a40 100%)',
+                'linear-gradient(135deg, #0f1a0a 0%, #162310 50%, #1c2d14 100%)',
+              ];
+              const gradientBg = PLACEHOLDERS[i % PLACEHOLDERS.length];
+
               return (
-                <FadeUp className="project-card" delay={0.1 * (i % 3)} key={project.id || i}>
-                  <div className="project-status">
-                    <span className={`status-dot ${isLive ? 'live' : 'wip'}`}></span>
-                    <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
+                <FadeUp
+                  className={`project-card project-card--redesign${isExpanded ? ' project-card--expanded' : ''}`}
+                  delay={0.1 * (i % 3)}
+                  key={project.id || i}
+                >
+                  {/* ── Cabeçalho clicável (capa + nome + teaser) ── */}
+                  <div
+                    className="project-card__header"
+                    onClick={() => setExpandedId(isExpanded ? null : project.id)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && setExpandedId(isExpanded ? null : project.id)}
+                    aria-expanded={isExpanded}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* Capa ou placeholder */}
+                    <div className="project-card__cover">
+                      {coverUrl ? (
+                        <img src={coverUrl} alt={title} className="project-card__cover-img" />
+                      ) : (
+                        <div className="project-card__placeholder" style={{ background: gradientBg }}>
+                          <span className="project-card__initials">{initials}</span>
+                        </div>
+                      )}
+
+                      {/* Badge de status sobreposto */}
+                      <div className="project-card__status-badge">
+                        <span className={`status-dot ${isLive ? 'live' : 'wip'}`}></span>
+                        <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
+                      </div>
+
+                      {/* Indicador de expansão */}
+                      <div className={`project-card__expand-icon${isExpanded ? ' open' : ''}`}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                          <path d={isExpanded ? 'M2 9l5-5 5 5' : 'M2 5l5 5 5-5'} />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Nome + teaser */}
+                    <div className="project-card__meta">
+                      <h3>{title}</h3>
+                      {teaser && <p className="project-card__teaser">{teaser}</p>}
+                      {tags.length > 0 && (
+                        <div className="project-tags">
+                          {tags.map((tag: string) => <span className="tag" key={tag}>{tag}</span>)}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <h3>{project[`title_${lang}`] || project.title_en || project.title}</h3>
-                  <p>{project[`description_${lang}`] || project.description_en || project.description}</p>
-                  {tags.length > 0 && (
-                    <div className="project-tags">
-                      {tags.map((tag: string) => <span className="tag" key={tag}>{tag}</span>)}
-                    </div>
-                  )}
-                  {(project.link || project.github) && (
-                    <div className="project-links">
-                      {project.link && <a href={project.link} target="_blank" rel="noreferrer" title="Abrir projeto"><ExternalLink size={18} /></a>}
-                      {project.github && <a href={project.github} target="_blank" rel="noreferrer" title="Ver no GitHub"><Github size={18} /></a>}
-                    </div>
-                  )}
+
+                  {/* ── Conteúdo expandido ── */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        className="project-card__body"
+                        key="body"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div className="project-card__body-inner">
+                          {/* Description */}
+                          {description && (
+                            <p className="project-card__description">{description}</p>
+                          )}
+
+                          {/* Galeria de evidências */}
+                          {evidenceFiles.length > 0 && (
+                            <div className="project-card__gallery">
+                              <span className="project-card__gallery-label">
+                                {lang === 'pt' ? 'Evidências' : lang === 'es' ? 'Evidencias' : 'Evidence'}
+                              </span>
+                              <div className="project-card__gallery-grid">
+                                {evidenceFiles.map((filename: string) => {
+                                  const url = buildEvidenceUrl(filename);
+                                  return (
+                                    <a
+                                      key={filename}
+                                      href={url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="project-card__thumb-link"
+                                      title={filename}
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <img
+                                        src={url}
+                                        alt={filename}
+                                        className="project-card__thumb"
+                                        loading="lazy"
+                                      />
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Links + botão fechar */}
+                          <div className="project-card__footer">
+                            <div className="project-links">
+                              {project.link && (
+                                <a href={project.link} target="_blank" rel="noreferrer" title="Abrir projeto" onClick={(e) => e.stopPropagation()}>
+                                  <ExternalLink size={18} />
+                                </a>
+                              )}
+                              {project.github && (
+                                <a href={project.github} target="_blank" rel="noreferrer" title="Ver no GitHub" onClick={(e) => e.stopPropagation()}>
+                                  <Github size={18} />
+                                </a>
+                              )}
+                            </div>
+                            <button
+                              className="project-card__close"
+                              onClick={(e) => { e.stopPropagation(); setExpandedId(null); }}
+                            >
+                              {lang === 'pt' ? 'Ver menos' : lang === 'es' ? 'Ver menos' : 'Show less'}
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </FadeUp>
               );
             }) : (
