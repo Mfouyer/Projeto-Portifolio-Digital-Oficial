@@ -1275,41 +1275,6 @@
   }
 }
 
-.architect-page .roadmap-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.architect-page .roadmap-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-
-.architect-page .roadmap-item:last-child { border-bottom: none; }
-
-.architect-page .roadmap-q {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--amber);
-  min-width: 52px;
-  letter-spacing: 0.06em;
-}
-
-.architect-page .roadmap-cert {
-  font-size: 14px;
-  color: var(--text);
-}
-
-.architect-page .roadmap-org {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-left: auto;
-}
 
 /* ─── Contact (formulário grava em messages) ─── */
 .architect-page #contact {

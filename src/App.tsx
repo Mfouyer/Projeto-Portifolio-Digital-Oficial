@@ -43,11 +43,11 @@ const FLAGSHIP_DETAILS = [
   { icon: '03', titleKey: 'oc.card3.h4', bodyKey: 'oc.card3.p' },
 ];
 
-// Certificações e roadmap: agora data-driven via PocketBase (collections
-// 'certifications' e 'learning_roadmap'). Os arrays abaixo são apenas FALLBACK
-// para o caso de a collection vir vazia / o backend não responder — assim a
-// secção nunca aparece vazia. O status (earned/studying/planned) reaproveita as
-// chaves i18n 'cred.status.*'; a descrição é multilingue (desc_pt/en/es).
+// Certificações: agora data-driven via PocketBase (collection 'certifications').
+// O array abaixo é apenas FALLBACK para o caso de a collection vir vazia /
+// o backend não responder — assim a secção nunca aparece vazia.
+// O status (earned/studying/planned) reaproveita as chaves i18n 'cred.status.*';
+// a descrição é multilingue (desc_pt/en/es).
 const FALLBACK_CERTIFICATIONS = [
   { id: 'fb-ai900', tag: 'MS', title: 'Azure AI Fundamentals (AI-900)', status: 'earned', issuer: 'Microsoft', category: 'ai',
     desc_pt: 'Microsoft — Fundamentos de IA na Azure', desc_en: 'Microsoft — Azure AI fundamentals', desc_es: 'Microsoft — Fundamentos de IA en Azure' },
@@ -63,12 +63,6 @@ const FALLBACK_CERTIFICATIONS = [
     desc_pt: 'Scrum.org — Metodologia ágil e facilitação de equipas', desc_en: 'Scrum.org — Agile methodology and team facilitation', desc_es: 'Scrum.org — Metodología ágil y facilitación de equipos' },
 ];
 
-const FALLBACK_ROADMAP = [
-  { id: 'fr-ai103', period: "Q3 '26", cert: 'AI-103 — Azure AI App & Agent Developer', org: 'Microsoft' },
-  { id: 'fr-ab730', period: "Q3 '26", cert: 'AB-730 / AB-731 — Agentic AI', org: 'LevelUp (Microsoft)' },
-  { id: 'fr-az104', period: "Q4 '26", cert: 'AZ-104 — Azure Administrator', org: 'Microsoft' },
-  { id: 'fr-aigp', period: "Q4 '26", cert: 'AIGP — AI Governance Professional', org: 'IAPP' },
-];
 
 const CONTACT_EMAIL = 'marcos.fouyer@gmail.com';
 
@@ -180,7 +174,6 @@ const App: React.FC = () => {
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
   const [certifications, setCertifications] = React.useState<any[]>([]);
-  const [roadmap, setRoadmap] = React.useState<any[]>([]);
   const [navOpen, setNavOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -198,11 +191,9 @@ const App: React.FC = () => {
         const skillsData = await pb.collection('skills').getFullList({ filter: 'highlighted = true', requestKey: null });
         const projectsData = await pb.collection('projects').getFullList({ filter: 'highlighted = true', requestKey: null });
         const certsData = await pb.collection('certifications').getFullList({ sort: 'sort', requestKey: null });
-        const roadmapData = await pb.collection('learning_roadmap').getFullList({ sort: 'sort', requestKey: null });
         setSkills(skillsData);
         setProjects(projectsData);
         setCertifications(certsData);
-        setRoadmap(roadmapData);
       } catch (error: any) {
         if (error?.isAbort) return;
         console.error('Error fetching portfolio data:', error);
@@ -398,18 +389,6 @@ const App: React.FC = () => {
               })()}
             </div>
 
-            <div className="cred-section">
-              <h3>{t('cred.roadmap.title')}</h3>
-              <div className="roadmap-list">
-                {(roadmap.length > 0 ? roadmap : FALLBACK_ROADMAP).map((r, i) => (
-                  <FadeUp className="roadmap-item" delay={0.1 * i} key={r.id}>
-                    <span className="roadmap-q">{r.period}</span>
-                    <span className="roadmap-cert">{r.cert}</span>
-                    <span className="roadmap-org">{r.org}</span>
-                  </FadeUp>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
