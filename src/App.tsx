@@ -341,6 +341,11 @@ const App: React.FC = () => {
                     <p>{t(act.bodyKey)}</p>
                   </FadeUp>
                 ))}
+
+                <FadeUp className="about-act" delay={0.4}>
+                  <h3>{t('about.quals.h3')}</h3>
+                  <p>{t('about.quals.p')}</p>
+                </FadeUp>
               </div>
             </div>
           </div>

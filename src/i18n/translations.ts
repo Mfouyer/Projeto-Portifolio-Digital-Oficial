@@ -46,6 +46,11 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.h3': 'Construído para escalar desde o primeiro dia.',
     'about.act1.p':
       'Mais de 15 anos em operações de IT e gestão de serviços à escala empresarial — os últimos na MEO, uma das maiores operadoras de telecomunicações de Portugal, onde lidero qualidade e a transformação de processos manuais com IA e Power Platform. Antes, no Brasil, geri equipas de mais de 500 profissionais e contratos de alta complexidade para clientes como Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo e Airbus, entre outros. Domino a complexidade das operações de grande escala, compreendo as reais necessidades do negócio e sei alinhar equipas multifuncionais em torno de objetivos comuns — uma disciplina operacional que constitui o alicerce de tudo o que construo hoje.',
+
+    'about.quals.h3': 'Habilitações & Credenciais',
+    'about.quals.p':
+      'Formação multidisciplinar que cruza tecnologia, negócio e desenvolvimento humano: licenciatura em Ciência da Computação, formação em Marketing e MBA (pós-graduação) em Negócios e Coaching. Certificado em Inteligência Artificial pela Microsoft — AI Business Professional (AB-730) e AI Transformation Leader (AB-731) — e em governança e gestão de serviços: ITIL, COBIT e Scrum Master. Utilizador avançado de Inteligência Artificial Generativa e Construção de Agentes. Esta combinação de habilitações dá uma visão tática e estratégica do negócio, permitindo aumentar a eficiência operacional através da adoção da Inteligência Artificial.',
+
     'about.act2.label': 'Ato II — O Construtor',
     'about.act2.h3': 'De usar ferramentas de IA a operar sistemas de IA.',
     'about.act2.p':
@@ -172,6 +177,11 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.h3': 'Built for scale from day one.',
     'about.act1.p':
       "More than 15 years in IT operations and service management at enterprise scale — most recently at MEO, one of Portugal's largest telecoms, where I lead quality and the transformation of manual processes with AI and the Power Platform. Before that, in Brazil, I ran teams of over 500 professionals and high-complexity contracts for clients such as Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo and Airbus, among others. I master the complexity of large-scale operations, understand what the business truly needs, and know how to align cross-functional teams around shared goals — an operational discipline that forms the foundation of everything I build today.",
+
+    'about.quals.h3': 'Qualifications & Credentials',
+    'about.quals.p':
+      'A multidisciplinary background bridging technology, business and human development: a degree in Computer Science, training in Marketing, and an MBA (postgraduate) in Business and Coaching. Certified in Artificial Intelligence by Microsoft — AI Business Professional (AB-730) and AI Transformation Leader (AB-731) — and in governance and service management: ITIL, COBIT and Scrum Master. Advanced user of Generative Artificial Intelligence and Agent Building. This combination of qualifications provides a tactical and strategic view of the business, enabling operational efficiency gains through the adoption of Artificial Intelligence.',
+
     'about.act2.label': 'Act II — The Builder',
     'about.act2.h3': 'From using AI tools to running AI systems.',
     'about.act2.p':
@@ -298,6 +308,11 @@ export const I18N: Record<Lang, Dict> = {
     'about.act1.h3': 'Construido para escalar desde el primer día.',
     'about.act1.p':
       'Más de 15 años en operaciones de IT y gestión de servicios a escala empresarial — los últimos en MEO, una de las mayores operadoras de telecomunicaciones de Portugal, donde lidero calidad y la transformación de procesos manuales con IA y Power Platform. Antes, en Brasil, dirigí equipos de más de 500 profesionales y contratos de alta complejidad para clientes como Petrobras, Telefónica, BNP Paribas, Bank of America, AIG, Dell, Lenovo y Airbus, entre otros. Domino la complejidad de las operaciones a gran escala, comprendo las necesidades reales del negocio y sé alinear equipos multifuncionales en torno a objetivos comunes — una disciplina operativa que constituye la base de todo lo que construyo hoy.',
+
+    'about.quals.h3': 'Titulaciones y Credenciales',
+    'about.quals.p':
+      'Una formación multidisciplinar que une tecnología, negocio y desarrollo humano: licenciatura en Ciencias de la Computación, formación en Marketing y un MBA (posgrado) en Negocios y Coaching. Certificado en Inteligencia Artificial por Microsoft — AI Business Professional (AB-730) y AI Transformation Leader (AB-731) — y en gobernanza y gestión de servicios: ITIL, COBIT y Scrum Master. Usuario avanzado de Inteligencia Artificial Generativa y Construcción de Agentes. Esta combinación de titulaciones aporta una visión táctica y estratégica del negocio, permitiendo aumentar la eficiencia operativa mediante la adopción de la Inteligencia Artificial.',
+
     'about.act2.label': 'Acto II — El Constructor',
     'about.act2.h3': 'De usar herramientas de IA a operar sistemas de IA.',
     'about.act2.p':
