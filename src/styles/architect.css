@@ -1119,13 +1119,21 @@
   line-height: 1.65;
 }
 
-/* ─── Credentials (embutidas na coluna da foto, após about-photo) ─── */
+/* ─── Credentials ─── */
+/* Versão antiga (coluna da foto): mantida como base */
 .architect-page .about-credentials {
   margin-top: 40px;
 }
 
+/* Versão nova: full-width abaixo do about-grid, após a foto de perfil */
+.architect-page .about-credentials--below-grid {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
 .architect-page .about-cred-h2 {
-  font-size: clamp(16px, 2vw, 22px);
+  font-size: clamp(20px, 2.5vw, 28px);
   margin-bottom: 20px;
 }
 

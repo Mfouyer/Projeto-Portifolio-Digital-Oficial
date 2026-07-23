@@ -51,8 +51,10 @@ const FLAGSHIP_DETAILS = [
 const FALLBACK_CERTIFICATIONS = [
   { id: 'fb-ai900', tag: 'MS', title: 'Azure AI Fundamentals (AI-900)', status: 'earned', issuer: 'Microsoft', category: 'ai',
     desc_pt: 'Microsoft — Fundamentos de IA na Azure', desc_en: 'Microsoft — Azure AI fundamentals', desc_es: 'Microsoft — Fundamentos de IA en Azure' },
-  { id: 'fb-ai901', tag: 'MS', title: 'AI-901', status: 'earned', issuer: 'Microsoft', category: 'ai',
-    desc_pt: 'Microsoft', desc_en: 'Microsoft', desc_es: 'Microsoft' },
+  { id: 'fb-ab730', tag: 'MS', title: 'AI Business Professional (AB-730)', status: 'earned', issuer: 'LevelUp (Microsoft)', category: 'ai',
+    desc_pt: 'LevelUp/Microsoft — IA aplicada a negócios', desc_en: 'LevelUp/Microsoft — AI applied to business', desc_es: 'LevelUp/Microsoft — IA aplicada a negocios' },
+  { id: 'fb-ab731', tag: 'MS', title: 'AI Transformation Leader (AB-731)', status: 'earned', issuer: 'LevelUp (Microsoft)', category: 'ai',
+    desc_pt: 'LevelUp/Microsoft — Liderança de transformação com IA', desc_en: 'LevelUp/Microsoft — AI transformation leadership', desc_es: 'LevelUp/Microsoft — Liderazgo de transformación con IA' },
   { id: 'fb-vand', tag: 'V', title: 'Agentic AI and AI Agents for Leaders', status: 'earned', issuer: 'Vanderbilt University', category: 'ai',
     desc_pt: 'Vanderbilt University — Agentic AI, governança de IA e liderança', desc_en: 'Vanderbilt University — Agentic AI, AI governance and leadership', desc_es: 'Vanderbilt University — Agentic AI, gobernanza de IA y liderazgo' },
   { id: 'fb-ai103', tag: 'MS', title: 'AI-103: Azure AI App and Agent Developer Associate', status: 'studying', issuer: 'Microsoft', category: 'ai',
@@ -329,64 +331,6 @@ const App: React.FC = () => {
                   </>
                 )}
               </div>
-
-              {/* ─ Habilitações & Credenciais ─ */}
-              <div id="credentials" className="about-credentials">
-                <span className="section-label">{t('cred.label')}</span>
-                <FadeUp><h2 className="about-cred-h2">{t('cred.h2.line1')}<br />{t('cred.h2.line2')}</h2></FadeUp>
-
-                <div className="cred-section">
-                  <h3>{t('cred.certs.title')}</h3>
-                  {(() => {
-                    const certs = certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS;
-                    const groups = [
-                      { key: 'ai', titleKey: 'cred.certs.groupAi', items: certs.filter((c) => c.category === 'ai') },
-                      { key: 'other', titleKey: 'cred.certs.groupOther', items: certs.filter((c) => c.category !== 'ai') },
-                    ];
-                    let idx = 0;
-                    return groups
-                      .filter((g) => g.items.length > 0)
-                      .map((g) => (
-                        <div className="cred-group" key={g.key}>
-                          <h4 className="cred-group-title">{t(g.titleKey)}</h4>
-                          <div className="cred-list">
-                            {g.items.map((c) => {
-                              const org = (c.issuer || '').toUpperCase();
-                              const orgInTitle = org && (c.title || '').toUpperCase().includes(org);
-                              return (
-                                <FadeUp className="cred-item" delay={0.05 * idx++} key={c.id}>
-                                  <div className="cred-icon">{c.tag}</div>
-                                  <div className="cred-body">
-                                    <strong>
-                                      {org && !orgInTitle && (
-                                        <><span className="cred-org">{org}</span>{' - '}</>
-                                      )}
-                                      {c.title}{' '}
-                                      <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
-                                    </strong>
-                                  </div>
-                                </FadeUp>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ));
-                  })()}
-                </div>
-
-                <div className="cred-section">
-                  <h3>{t('cred.roadmap.title')}</h3>
-                  <div className="roadmap-list">
-                    {(roadmap.length > 0 ? roadmap : FALLBACK_ROADMAP).map((r, i) => (
-                      <FadeUp className="roadmap-item" delay={0.1 * i} key={r.id}>
-                        <span className="roadmap-q">{r.period}</span>
-                        <span className="roadmap-cert">{r.cert}</span>
-                        <span className="roadmap-org">{r.org}</span>
-                      </FadeUp>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div>
@@ -406,6 +350,64 @@ const App: React.FC = () => {
                   <h3>{t('about.quals.h3')}</h3>
                   <p>{t('about.quals.p')}</p>
                 </FadeUp>
+              </div>
+            </div>
+          </div>
+
+          {/* ─ Habilitações & Credenciais ─ logo abaixo da foto/about-grid ─ */}
+          <div id="credentials" className="about-credentials about-credentials--below-grid">
+            <span className="section-label">{t('cred.label')}</span>
+            <FadeUp><h2 className="about-cred-h2">{t('cred.h2.line1')}<br />{t('cred.h2.line2')}</h2></FadeUp>
+
+            <div className="cred-section">
+              <h3>{t('cred.certs.title')}</h3>
+              {(() => {
+                const certs = certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS;
+                const groups = [
+                  { key: 'ai', titleKey: 'cred.certs.groupAi', items: certs.filter((c) => c.category === 'ai') },
+                  { key: 'other', titleKey: 'cred.certs.groupOther', items: certs.filter((c) => c.category !== 'ai') },
+                ];
+                let idx = 0;
+                return groups
+                  .filter((g) => g.items.length > 0)
+                  .map((g) => (
+                    <div className="cred-group" key={g.key}>
+                      <h4 className="cred-group-title">{t(g.titleKey)}</h4>
+                      <div className="cred-list">
+                        {g.items.map((c) => {
+                          const org = (c.issuer || '').toUpperCase();
+                          const orgInTitle = org && (c.title || '').toUpperCase().includes(org);
+                          return (
+                            <FadeUp className="cred-item" delay={0.05 * idx++} key={c.id}>
+                              <div className="cred-icon">{c.tag}</div>
+                              <div className="cred-body">
+                                <strong>
+                                  {org && !orgInTitle && (
+                                    <><span className="cred-org">{org}</span>{' - '}</>
+                                  )}
+                                  {c.title}{' '}
+                                  <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
+                                </strong>
+                              </div>
+                            </FadeUp>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ));
+              })()}
+            </div>
+
+            <div className="cred-section">
+              <h3>{t('cred.roadmap.title')}</h3>
+              <div className="roadmap-list">
+                {(roadmap.length > 0 ? roadmap : FALLBACK_ROADMAP).map((r, i) => (
+                  <FadeUp className="roadmap-item" delay={0.1 * i} key={r.id}>
+                    <span className="roadmap-q">{r.period}</span>
+                    <span className="roadmap-cert">{r.cert}</span>
+                    <span className="roadmap-org">{r.org}</span>
+                  </FadeUp>
+                ))}
               </div>
             </div>
           </div>
