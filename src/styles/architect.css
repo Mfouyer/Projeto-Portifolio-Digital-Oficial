@@ -1234,32 +1234,32 @@
   display: inline-block;
   transform-origin: center;
   font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   border-radius: 3px;
-  padding: 2px 6px;
+  padding: 2px 5px;
   margin-left: 6px;
   /* glow pulsante: cada estado pulsa na sua própria cor semântica (override por variante) */
   --cred-glow: rgba(217,119,6,0.4);
-  animation: cred-status-pulse 2.4s ease-in-out infinite;
+  animation: cred-status-pulse 3.2s ease-in-out infinite;
   will-change: box-shadow, opacity, transform, filter;
 }
 
-/* Pulsar claramente percetível mas elegante: glow + respiração de opacidade,
-   leve scale e variação da intensidade de cor (brightness) na cor semântica de cada estado */
+/* Pulsar suave: oscila entre 0.65→1.0, scale mínimo, glow contido */
 @keyframes cred-status-pulse {
   0%, 100% {
     box-shadow: 0 0 0 0 var(--cred-glow);
-    opacity: 0.6;
+    opacity: 0.65;
     transform: scale(1);
-    filter: brightness(0.92);
+    filter: brightness(0.95);
   }
   50% {
-    box-shadow: 0 0 12px 2px var(--cred-glow);
+    box-shadow: 0 0 6px 1px var(--cred-glow);
     opacity: 1;
-    transform: scale(1.07);
-    filter: brightness(1.28);
+    transform: scale(1.03);
+    filter: brightness(1.12);
   }
 }
 
