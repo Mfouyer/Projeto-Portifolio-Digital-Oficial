@@ -322,6 +322,51 @@ const App: React.FC = () => {
                   </>
                 )}
               </div>
+
+              {/* ─ Credenciais ─ coladas por baixo da foto, dentro da coluna esquerda ─ */}
+              <div id="credentials" className="about-credentials about-credentials--below-grid">
+                <span className="section-label">{t('cred.label')}</span>
+                <FadeUp><h2 className="about-cred-h2">{t('cred.h2.line1')}<br />{t('cred.h2.line2')}</h2></FadeUp>
+
+                <div className="cred-section">
+                  <h3>{t('cred.certs.title')}</h3>
+                  {(() => {
+                    const certs = certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS;
+                    const groups = [
+                      { key: 'ai', titleKey: 'cred.certs.groupAi', items: certs.filter((c) => c.category === 'ai') },
+                      { key: 'other', titleKey: 'cred.certs.groupOther', items: certs.filter((c) => c.category !== 'ai') },
+                    ];
+                    let idx = 0;
+                    return groups
+                      .filter((g) => g.items.length > 0)
+                      .map((g) => (
+                        <div className="cred-group" key={g.key}>
+                          <h4 className="cred-group-title">{t(g.titleKey)}</h4>
+                          <div className="cred-list">
+                            {g.items.map((c) => {
+                              const org = (c.issuer || '').toUpperCase();
+                              const orgInTitle = org && (c.title || '').toUpperCase().includes(org);
+                              return (
+                                <FadeUp className="cred-item" delay={0.05 * idx++} key={c.id}>
+                                  <div className="cred-icon">{c.tag}</div>
+                                  <div className="cred-body">
+                                    <strong>
+                                      {org && !orgInTitle && (
+                                        <><span className="cred-org">{org}</span>{' - '}</>
+                                      )}
+                                      {c.title}{' '}
+                                      <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
+                                    </strong>
+                                  </div>
+                                </FadeUp>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ));
+                  })()}
+                </div>
+              </div>
             </div>
 
             <div>
@@ -343,52 +388,6 @@ const App: React.FC = () => {
                 </FadeUp>
               </div>
             </div>
-          </div>
-
-          {/* ─ Habilitações & Credenciais ─ logo abaixo da foto/about-grid ─ */}
-          <div id="credentials" className="about-credentials about-credentials--below-grid">
-            <span className="section-label">{t('cred.label')}</span>
-            <FadeUp><h2 className="about-cred-h2">{t('cred.h2.line1')}<br />{t('cred.h2.line2')}</h2></FadeUp>
-
-            <div className="cred-section">
-              <h3>{t('cred.certs.title')}</h3>
-              {(() => {
-                const certs = certifications.length > 0 ? certifications : FALLBACK_CERTIFICATIONS;
-                const groups = [
-                  { key: 'ai', titleKey: 'cred.certs.groupAi', items: certs.filter((c) => c.category === 'ai') },
-                  { key: 'other', titleKey: 'cred.certs.groupOther', items: certs.filter((c) => c.category !== 'ai') },
-                ];
-                let idx = 0;
-                return groups
-                  .filter((g) => g.items.length > 0)
-                  .map((g) => (
-                    <div className="cred-group" key={g.key}>
-                      <h4 className="cred-group-title">{t(g.titleKey)}</h4>
-                      <div className="cred-list">
-                        {g.items.map((c) => {
-                          const org = (c.issuer || '').toUpperCase();
-                          const orgInTitle = org && (c.title || '').toUpperCase().includes(org);
-                          return (
-                            <FadeUp className="cred-item" delay={0.05 * idx++} key={c.id}>
-                              <div className="cred-icon">{c.tag}</div>
-                              <div className="cred-body">
-                                <strong>
-                                  {org && !orgInTitle && (
-                                    <><span className="cred-org">{org}</span>{' - '}</>
-                                  )}
-                                  {c.title}{' '}
-                                  <span className={`cred-status ${c.status}`}>{t(`cred.status.${c.status}`)}</span>
-                                </strong>
-                              </div>
-                            </FadeUp>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ));
-              })()}
-            </div>
-
           </div>
         </div>
       </section>
