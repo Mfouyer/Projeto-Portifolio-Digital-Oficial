@@ -954,6 +954,37 @@
   margin: 0;
 }
 
+/* Markdown content renderer */
+.architect-page .md-content {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.architect-page .md-content p {
+  margin: 0 0 10px;
+}
+.architect-page .md-content p:last-child {
+  margin-bottom: 0;
+}
+.architect-page .md-heading {
+  margin: 14px 0 6px !important;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.architect-page .md-heading:first-child {
+  margin-top: 0 !important;
+}
+.architect-page .md-list {
+  margin: 0 0 10px 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+.architect-page .md-list li {
+  margin-bottom: 3px;
+}
+
 /* Galeria */
 .architect-page .project-card__gallery {
   display: flex;

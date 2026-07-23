@@ -76,6 +76,53 @@ const PROFILE_PHOTO = profilePhoto;
    HELPERS
    ════════════════════════════════════════════════════════════ */
 
+// Lightweight markdown renderer for project descriptions.
+// Handles: **Bold headings**, - bullet lists, plain paragraphs.
+const MarkdownContent: React.FC<{ text: string; className?: string }> = ({ text, className = '' }) => {
+  const blocks = text.split(/\n\n+/);
+  return (
+    <div className={`md-content ${className}`}>
+      {blocks.map((block, i) => {
+        const trimmed = block.trim();
+        if (!trimmed) return null;
+        // Bold heading: **Title** (alone on the block or first line)
+        const headingMatch = trimmed.match(/^\*\*(.+?)\*\*\s*$/);
+        if (headingMatch) {
+          return <p key={i} className="md-heading"><strong>{headingMatch[1]}</strong></p>;
+        }
+        // Bullet list: lines starting with "- "
+        const lines = trimmed.split('\n');
+        if (lines.every(l => l.trim().startsWith('- '))) {
+          return (
+            <ul key={i} className="md-list">
+              {lines.map((l, j) => <li key={j}>{l.trim().slice(2)}</li>)}
+            </ul>
+          );
+        }
+        // Mixed block with a heading + bullets (e.g. "**Title**\n- item\n- item")
+        if (lines[0].match(/^\*\*(.+?)\*\*$/) && lines.slice(1).some(l => l.trim().startsWith('- '))) {
+          const headText = lines[0].match(/^\*\*(.+?)\*\*$/)![1];
+          const rest = lines.slice(1);
+          return (
+            <React.Fragment key={i}>
+              <p className="md-heading"><strong>{headText}</strong></p>
+              {rest.some(l => l.trim().startsWith('- ')) && (
+                <ul className="md-list">
+                  {rest.filter(l => l.trim().startsWith('- ')).map((l, j) => <li key={j}>{l.trim().slice(2)}</li>)}
+                </ul>
+              )}
+              {rest.filter(l => !l.trim().startsWith('- ') && l.trim()).map((l, j) => (
+                <p key={`t${j}`}>{l}</p>
+              ))}
+            </React.Fragment>
+          );
+        }
+        return <p key={i}>{trimmed}</p>;
+      })}
+    </div>
+  );
+};
+
 // Animação de entrada no scroll (substitui o IntersectionObserver do HTML).
 const FadeUp: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
   children, delay = 0, className = '',
@@ -456,7 +503,7 @@ const App: React.FC = () => {
                         <div className="project-card__body-inner">
                           {/* Description */}
                           {description && (
-                            <p className="project-card__description">{description}</p>
+                            <MarkdownContent text={description} className="project-card__description" />
                           )}
 
                           {/* Galeria de evidências */}
