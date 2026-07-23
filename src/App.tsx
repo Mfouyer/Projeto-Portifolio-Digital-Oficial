@@ -9,6 +9,7 @@ import { pb } from './lib/pocketbase';
 import { openClaudeDiagram } from './components/OpenClaudeDiagram';
 import HeroMotion from './components/HeroMotion';
 import LangSwitcher from './components/LangSwitcher';
+import StackTecnico from './components/StackTecnico';
 import { useLanguage } from './contexts/LanguageContext';
 import profilePhoto from './assets/marcos-fouyer.jpg';
 import './App.css';
@@ -63,6 +64,9 @@ const FALLBACK_CERTIFICATIONS = [
     desc_pt: 'Scrum.org — Metodologia ágil e facilitação de equipas', desc_en: 'Scrum.org — Agile methodology and team facilitation', desc_es: 'Scrum.org — Metodología ágil y facilitación de equipos' },
 ];
 
+
+// Palavras a ignorar ao gerar a sigla dos cards de projeto (preposições/artigos PT+EN).
+const INITIALS_STOPWORDS = new Set(['de','da','do','das','dos','e','a','o','as','os','para','com','em','no','na','of','the','and','for','to','in']);
 
 const CONTACT_EMAIL = 'marcos.fouyer@gmail.com';
 
@@ -188,7 +192,7 @@ const App: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const skillsData = await pb.collection('skills').getFullList({ filter: 'highlighted = true', requestKey: null });
+        const skillsData = await pb.collection('skills').getFullList({ filter: 'highlighted = true', sort: 'sort', requestKey: null });
         const projectsData = await pb.collection('projects').getFullList({ filter: 'highlighted = true', requestKey: null });
         const certsData = await pb.collection('certifications').getFullList({ sort: 'sort', requestKey: null });
         setSkills(skillsData);
@@ -451,8 +455,8 @@ const App: React.FC = () => {
 
               // Iniciais para o placeholder (máx 2 chars)
               const initials = title
-                .split(/[\s\-_]+/)
-                .filter(Boolean)
+                .split(/[\s\-_–—·|/]+/)
+                .filter((w: string) => /[a-zA-ZÀ-ÿ0-9]/.test(w) && !INITIALS_STOPWORDS.has(w.toLowerCase()))
                 .slice(0, 2)
                 .map((w: string) => w[0].toUpperCase())
                 .join('');
@@ -507,11 +511,13 @@ const App: React.FC = () => {
                         </div>
                       )}
 
-                      {/* Badge de status sobreposto */}
-                      <div className="project-card__status-badge">
-                        <span className={`status-dot ${isLive ? 'live' : 'wip'}`}></span>
-                        <span>{isLive ? t('proj.status.live') : t('proj.status.soon')}</span>
-                      </div>
+                      {/* Badge de status — só nos projetos ativos (o "Em breve" foi removido a pedido do Marcos) */}
+                      {isLive && (
+                        <div className="project-card__status-badge">
+                          <span className="status-dot live"></span>
+                          <span>{t('proj.status.live')}</span>
+                        </div>
+                      )}
 
                       {/* Indicador de expansão */}
                       <div className={`project-card__expand-icon${isExpanded ? ' open' : ''}`}>
@@ -653,6 +659,11 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <div className="section-divider"></div>
+
+      {/* ─── Stack Técnico ─── */}
+      <StackTecnico />
 
       <div className="section-divider"></div>
 

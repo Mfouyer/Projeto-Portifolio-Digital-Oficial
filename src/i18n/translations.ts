@@ -92,6 +92,13 @@ export const I18N: Record<Lang, Dict> = {
     'proj.empty':
       'Nenhum projeto destacado no momento. Adicione projetos pelo painel admin e marque “Destacar”.',
 
+    'stack.eyebrow': 'COMO CONSTRUO',
+    'stack.subtitle': 'O stack por trás das entregas.',
+    'stack.group.agentes': 'Agentes & Orquestração',
+    'stack.group.rag': 'RAG & Conhecimento',
+    'stack.group.governanca': 'Governança & Ops',
+    'stack.group.integracao': 'Integração & Cloud',
+
     'cap.label': 'O Que Entrego',
     'cap.h2': 'Competências — em linguagem de negócio.',
     'cap.lead':
@@ -223,6 +230,13 @@ export const I18N: Record<Lang, Dict> = {
     'proj.empty':
       'No highlighted projects at the moment. Add projects from the admin panel and mark them as “Highlight”.',
 
+    'stack.eyebrow': 'HOW I BUILD',
+    'stack.subtitle': 'The stack behind the deliverables.',
+    'stack.group.agentes': 'Agents & Orchestration',
+    'stack.group.rag': 'RAG & Knowledge',
+    'stack.group.governanca': 'Governance & Ops',
+    'stack.group.integracao': 'Integration & Cloud',
+
     'cap.label': 'What I Deliver',
     'cap.h2': 'Capabilities — in business language.',
     'cap.lead':
@@ -353,6 +367,13 @@ export const I18N: Record<Lang, Dict> = {
     'proj.status.soon': 'Próximamente',
     'proj.empty':
       'Ningún proyecto destacado por el momento. Añade proyectos desde el panel admin y márcalos como “Destacar”.',
+
+    'stack.eyebrow': 'CÓMO CONSTRUYO',
+    'stack.subtitle': 'El stack detrás de las entregas.',
+    'stack.group.agentes': 'Agentes y Orquestación',
+    'stack.group.rag': 'RAG y Conocimiento',
+    'stack.group.governanca': 'Gobernanza y Ops',
+    'stack.group.integracao': 'Integración y Cloud',
 
     'cap.label': 'Lo Que Entrego',
     'cap.h2': 'Capacidades — en lenguaje de negocio.',
