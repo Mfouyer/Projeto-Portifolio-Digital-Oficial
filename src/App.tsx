@@ -475,6 +475,12 @@ const App: React.FC = () => {
                 ? `https://pb.mfouyer.com/api/files/${project.collectionId}/${project.id}/${coverFile}`
                 : '';
 
+              // URL do vídeo hero (campo hero_video — MP4 loop sem áudio)
+              const heroVideoFile: string = project.hero_video || '';
+              const heroVideoUrl = heroVideoFile
+                ? `https://pb.mfouyer.com/api/files/${project.collectionId}/${project.id}/${heroVideoFile}`
+                : '';
+
               // Paleta de gradientes para o placeholder — distribuída por índice
               const PLACEHOLDERS = [
                 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
@@ -503,7 +509,17 @@ const App: React.FC = () => {
                   >
                     {/* Capa ou placeholder */}
                     <div className="project-card__cover">
-                      {coverUrl ? (
+                      {heroVideoUrl ? (
+                        <video
+                          src={heroVideoUrl}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="project-card__cover-img"
+                          poster={coverUrl || undefined}
+                        />
+                      ) : coverUrl ? (
                         <img src={coverUrl} alt={title} className="project-card__cover-img" />
                       ) : (
                         <div className="project-card__placeholder" style={{ background: gradientBg }}>
