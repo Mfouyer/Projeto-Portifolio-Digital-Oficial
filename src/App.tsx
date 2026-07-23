@@ -169,6 +169,53 @@ function useTypedText(phrases: string[]): string {
 }
 
 /* ════════════════════════════════════════════════════════════
+   PROJECT HERO VIDEO
+   Componente isolado para que useRef + useEffect funcionem
+   dentro do .map() dos cards de projeto.
+   Fix: Chrome avalia a autoplay policy no momento do mount DOM.
+   O atributo HTML `muted` pode não estar sincronizado a tempo —
+   forçar video.muted = true + video.defaultMuted = true via ref
+   antes de chamar play() garante autoplay sem gesto do utilizador.
+   ════════════════════════════════════════════════════════════ */
+
+const ProjectHeroVideo: React.FC<{ src: string; poster?: string; className?: string }> = ({
+  src,
+  poster,
+  className,
+}) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Fix: garantir muted no DOM antes da avaliação da autoplay policy
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay bloqueado silenciosamente — não quebra a app
+      });
+    }
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      poster={poster}
+      className={className}
+    />
+  );
+};
+
+/* ════════════════════════════════════════════════════════════
    APP
    ════════════════════════════════════════════════════════════ */
 
@@ -510,14 +557,10 @@ const App: React.FC = () => {
                     {/* Capa ou placeholder */}
                     <div className="project-card__cover">
                       {heroVideoUrl ? (
-                        <video
+                        <ProjectHeroVideo
                           src={heroVideoUrl}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          className="project-card__cover-img"
                           poster={coverUrl || undefined}
+                          className="project-card__cover-img"
                         />
                       ) : coverUrl ? (
                         <img src={coverUrl} alt={title} className="project-card__cover-img" />
