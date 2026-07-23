@@ -830,7 +830,7 @@ const App: React.FC = () => {
           <div className="footer-inner">
             <div className="footer-logo">Erik Fouyer<span>{t('footer.logo.suffix')}</span></div>
             <ul className="footer-links">
-              <li><a href="#" title="LinkedIn"><Linkedin size={15} /> LinkedIn</a></li>
+              <li><a href="https://www.linkedin.com/in/marcos-fouyer-173b0415" title="LinkedIn" target="_blank" rel="noopener noreferrer"><Linkedin size={15} /> LinkedIn</a></li>
               <li><a href="#" title="GitHub"><Github size={15} /> GitHub</a></li>
               <li><a href={`mailto:${CONTACT_EMAIL}`} title="Email"><Mail size={15} /> Email</a></li>
             </ul>
