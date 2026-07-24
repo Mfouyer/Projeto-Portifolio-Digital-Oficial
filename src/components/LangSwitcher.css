@@ -1,0 +1,105 @@
+/* LangSwitcher — estilos self-contained.
+   Antes, o CSS deste dropdown vivia em architect.css scoped a `.architect-page`,
+   por isso as páginas /news e /cv/download (sem esse wrapper) mostravam o menu
+   sempre aberto. Aqui as regras são independentes do tema da página e trazem os
+   seus próprios tokens (prefixo --ls-) para funcionar em qualquer contexto. */
+.lang-switcher {
+  --ls-surface:    #111114;
+  --ls-surface2:   #17171B;
+  --ls-border:     #1E1E24;
+  --ls-amber:      #D97706;
+  --ls-amber-dim:  rgba(217,119,6,0.12);
+  --ls-text:       #E8E8EC;
+  --ls-text-muted: #7A7A8A;
+  --ls-mono:       'JetBrains Mono', monospace;
+  --ls-sans:       'Inter', sans-serif;
+  --ls-radius:     8px;
+  position: relative;
+}
+
+.lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ls-surface2);
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-radius);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: var(--ls-mono);
+}
+.lang-trigger:hover { border-color: rgba(217,119,6,0.45); }
+
+.lang-flag { display: inline-flex; }
+.lang-flag svg {
+  border-radius: 2px;
+  display: block;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.lang-code {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ls-text);
+}
+
+.lang-chevron {
+  color: var(--ls-text-muted);
+  transition: transform 0.2s;
+}
+.lang-switcher.open .lang-chevron { transform: rotate(180deg); }
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 168px;
+  background: var(--ls-surface);
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-radius);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  z-index: 120;
+}
+.lang-switcher.open .lang-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 10px;
+  cursor: pointer;
+  font-family: var(--ls-sans);
+  font-size: 13px;
+  color: var(--ls-text-muted);
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-option svg {
+  border-radius: 2px;
+  display: block;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+}
+.lang-option:hover { background: var(--ls-surface2); color: var(--ls-text); }
+.lang-option.active {
+  color: var(--ls-amber);
+  background: var(--ls-amber-dim);
+}

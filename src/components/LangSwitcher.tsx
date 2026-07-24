@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FLAG_SVG, I18N_LANGS, I18N_NAMES, type Lang } from '../i18n/translations';
+import './LangSwitcher.css';
 
 /**
  * Language dropdown with flags — faithful to the approved mockup
