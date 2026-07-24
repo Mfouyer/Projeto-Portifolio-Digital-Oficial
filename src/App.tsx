@@ -6,7 +6,7 @@ import {
   ExternalLink, Send, Code2, FolderOpen, LayoutGrid, Download, icons,
 } from 'lucide-react';
 import { pb } from './lib/pocketbase';
-// OpenClaudeDiagram SVG substituído por vídeo — import removido
+import { openClaudeDiagram } from './components/OpenClaudeDiagram';
 import HeroMotion from './components/HeroMotion';
 import LangSwitcher from './components/LangSwitcher';
 import { CvModal } from './components/CvModal';
@@ -212,52 +212,6 @@ const ProjectHeroVideo: React.FC<{ src: string; poster?: string; className?: str
       playsInline
       poster={poster}
       className={className}
-    />
-  );
-};
-
-/* ════════════════════════════════════════════════════════════
-   OPENCLAUDE ARCHITECTURE VIDEO
-   Substitui o diagrama SVG estático.
-   Mesmo padrão de fix muted do ProjectHeroVideo (commit 9138b06).
-   ════════════════════════════════════════════════════════════ */
-
-const OPENCLAUDE_VIDEO_URL =
-  'https://pb.mfouyer.com/api/files/pbc_484305853/2haqvo5dbtnenyk/openclaude_hibrido_v2_slow_gj0hqkovb4.mp4';
-
-const OpenClaudeArchVideo: React.FC = () => {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-
-  React.useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    video.defaultMuted = true;
-
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay bloqueado silenciosamente — não quebra a app
-      });
-    }
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      src={OPENCLAUDE_VIDEO_URL}
-      autoPlay
-      muted
-      loop
-      playsInline
-      style={{
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        borderRadius: '8px',
-        display: 'block',
-      }}
     />
   );
 };
@@ -524,9 +478,7 @@ const App: React.FC = () => {
           <FadeUp>
             <div className="diagram-wrapper">
               <div className="diagram-title"><span>{t('oc.diagram.title')}</span></div>
-              <div className="diagram-svg-wrap">
-                <OpenClaudeArchVideo />
-              </div>
+              <div className="diagram-svg-wrap" dangerouslySetInnerHTML={{ __html: openClaudeDiagram }} />
             </div>
           </FadeUp>
 
