@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { pb } from '../lib/pocketbase';
-import { LayoutDashboard, LogOut, Code2, Presentation, Home, Mail } from 'lucide-react';
+import { LayoutDashboard, LogOut, Code2, Presentation, Home, Mail, FileUp, ClipboardList } from 'lucide-react';
 
 export const AdminLayout = () => {
     const location = useLocation();
@@ -41,6 +41,12 @@ export const AdminLayout = () => {
                     </Link>
                     <Link to="/admin/messages" className={`nav-link ${location.pathname === '/admin/messages' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
                         <Mail size={20} /> Mensagens
+                    </Link>
+                    <Link to="/admin/cv" className={`nav-link ${location.pathname === '/admin/cv' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
+                        <FileUp size={20} /> Carregar CV
+                    </Link>
+                    <Link to="/admin/cv-requests" className={`nav-link ${location.pathname === '/admin/cv-requests' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
+                        <ClipboardList size={20} /> Pedidos de CV
                     </Link>
                 </nav>
 
