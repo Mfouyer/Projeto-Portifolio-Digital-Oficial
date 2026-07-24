@@ -223,7 +223,7 @@ const ProjectHeroVideo: React.FC<{ src: string; poster?: string; className?: str
    ════════════════════════════════════════════════════════════ */
 
 const OPENCLAUDE_VIDEO_URL =
-  'https://pb.mfouyer.com/api/files/pbc_484305853/2haqvo5dbtnenyk/openclaude_hibrido_v2_gkvmlnu6ze.mp4';
+  'https://pb.mfouyer.com/api/files/pbc_484305853/2haqvo5dbtnenyk/openclaude_hibrido_v2_slow_gj0hqkovb4.mp4';
 
 const OpenClaudeArchVideo: React.FC = () => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
