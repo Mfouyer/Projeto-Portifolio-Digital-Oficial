@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Shield, ArrowDown, Github, Linkedin, Mail,
-  ExternalLink, Send, Code2, FolderOpen, LayoutGrid, icons,
+  ExternalLink, Send, Code2, FolderOpen, LayoutGrid, Download, icons,
 } from 'lucide-react';
 import { pb } from './lib/pocketbase';
 // OpenClaudeDiagram SVG substituído por vídeo — import removido
 import HeroMotion from './components/HeroMotion';
 import LangSwitcher from './components/LangSwitcher';
+import { CvModal } from './components/CvModal';
 import StackTecnico from './components/StackTecnico';
 import { useLanguage } from './contexts/LanguageContext';
 import profilePhoto from './assets/marcos-fouyer.jpg';
@@ -276,6 +277,7 @@ const App: React.FC = () => {
 
   const [expandedId, setExpandedId] = React.useState<string | null>(null);
 
+  const [cvModalOpen, setCvModalOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
@@ -335,7 +337,16 @@ const App: React.FC = () => {
             <li><a href="#projects" onClick={closeNav}>{t('nav.projects')}</a></li>
             <li><a href="#capabilities" onClick={closeNav}>{t('nav.capabilities')}</a></li>
             <li><a href="#credentials" onClick={closeNav}>{t('nav.credentials')}</a></li>
+            <li><Link to="/news" onClick={closeNav}>{t('nav.news')}</Link></li>
             <li><a href="#contact" className="nav-cta" onClick={closeNav}>{t('nav.cta')}</a></li>
+            <li>
+              <button
+                className="nav-cv-btn"
+                onClick={() => { setCvModalOpen(true); closeNav(); }}
+              >
+                {t('nav.cv')}
+              </button>
+            </li>
             <li className="nav-divider" aria-hidden="true"></li>
             <li>
               <Link to="/admin" className="nav-admin" title="Painel Admin" onClick={closeNav}>
@@ -379,6 +390,9 @@ const App: React.FC = () => {
               <a href="#capabilities" className="btn-secondary">
                 <LayoutGrid size={16} /> {t('hero.btn.skills')}
               </a>
+              <button className="btn-secondary" onClick={() => setCvModalOpen(true)}>
+                <Download size={16} /> {t('cv.btn')}
+              </button>
             </div>
 
             <div className="hero-meta">
@@ -838,6 +852,9 @@ const App: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* ─── CV Modal ─── */}
+      <CvModal open={cvModalOpen} onClose={() => setCvModalOpen(false)} />
 
     </div>
   );

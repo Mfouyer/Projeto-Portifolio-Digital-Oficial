@@ -1,0 +1,229 @@
+/* ───────────────────────────────────────────────────────────
+   cv-modal.css — modal "Download CV"
+   ─────────────────────────────────────────────────────────── */
+
+.cv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+}
+
+.cv-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  background: #111114;
+  border: 1px solid #1E1E24;
+  border-radius: 16px;
+  padding: 40px;
+  width: calc(100% - 32px);
+  max-width: 440px;
+  box-shadow: 0 24px 72px rgba(0,0,0,0.64), 0 0 0 1px rgba(217,119,6,0.08);
+}
+
+@media (max-width: 480px) {
+  .cv-modal { padding: 28px 20px; }
+}
+
+/* Close button */
+.cv-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #4A4A58;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  line-height: 0;
+}
+
+.cv-modal-close:hover {
+  color: #E8E8EC;
+  background: rgba(255,255,255,0.05);
+}
+
+/* Header */
+.cv-modal-header {
+  margin-bottom: 28px;
+}
+
+.cv-modal-icon {
+  color: #D97706;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.cv-modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #E8E8EC;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.cv-modal-header p {
+  font-size: 13px;
+  color: #7A7A8A;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Form */
+.cv-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.cv-form-field input,
+.cv-form-field select {
+  width: 100%;
+  padding: 13px 16px;
+  background: #17171B;
+  border: 1px solid #1E1E24;
+  border-radius: 8px;
+  color: #E8E8EC;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.cv-form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A4A58' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.cv-form-field input::placeholder { color: #4A4A58; }
+
+.cv-form-field select option {
+  background: #17171B;
+  color: #E8E8EC;
+}
+
+.cv-form-field select option[value=""] { color: #4A4A58; }
+
+.cv-form-field input:focus,
+.cv-form-field select:focus { border-color: #D97706; }
+
+/* RGPD consent */
+.cv-consent {
+  font-size: 11px;
+  color: #4A4A58;
+  line-height: 1.55;
+  margin: 2px 0 2px;
+}
+
+/* Error */
+.cv-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(239,68,68,0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+/* Submit button */
+.cv-btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: #D97706;
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+
+.cv-btn-submit:hover:not(:disabled) {
+  background: #F59E0B;
+  transform: translateY(-1px);
+}
+
+.cv-btn-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── Success state ─── */
+.cv-modal-success {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.cv-success-icon {
+  font-size: 42px;
+  margin-bottom: 20px;
+  line-height: 1;
+  display: block;
+}
+
+.cv-modal-success h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #E8E8EC;
+  margin: 0 0 12px;
+  line-height: 1.3;
+}
+
+.cv-modal-success p {
+  font-size: 14px;
+  color: #7A7A8A;
+  margin: 0 0 6px;
+  line-height: 1.6;
+}
+
+.cv-modal-success strong { color: #E8E8EC; }
+
+.cv-success-note {
+  font-size: 12px !important;
+  color: #4A4A58 !important;
+  margin-top: 8px !important;
+}
+
+.cv-btn-close-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  background: transparent;
+  border: 1px solid #1E1E24;
+  color: #7A7A8A;
+  border-radius: 8px;
+  padding: 9px 28px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.cv-btn-close-success:hover {
+  border-color: #D97706;
+  color: #D97706;
+}

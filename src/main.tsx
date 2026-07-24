@@ -16,6 +16,8 @@ import { AuthProvider } from './contexts/AuthContext.tsx';
 import { LanguageProvider } from './contexts/LanguageContext.tsx';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 import { Profile } from './pages/auth/Profile.tsx';
+import { NewsPage } from './pages/NewsPage.tsx';
+import { CvDownloadPage } from './pages/CvDownloadPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProtectedRoute><Profile /></ProtectedRoute>,
+  },
+  {
+    path: "/news",
+    element: <NewsPage />,
+  },
+  {
+    path: "/cv/download",
+    element: <CvDownloadPage />,
   },
   {
     path: "/admin/login",

@@ -1,0 +1,211 @@
+/* ───────────────────────────────────────────────────────────
+   cv-download.css — página /cv/download
+   Scopado sob .cv-dl-page
+   ─────────────────────────────────────────────────────────── */
+
+.cv-dl-page {
+  --bg:         #0A0A0B;
+  --surface:    #111114;
+  --border:     #1E1E24;
+  --amber:      #D97706;
+  --amber-lt:   #F59E0B;
+  --amber-dim:  rgba(217,119,6,0.12);
+  --text:       #E8E8EC;
+  --text-muted: #7A7A8A;
+  --text-dim:   #4A4A58;
+  --mono:       'JetBrains Mono', monospace;
+  --sans:       'Inter', sans-serif;
+  --radius:     8px;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Nav ─── */
+.cv-dl-nav {
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.cv-dl-nav-inner {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.cv-dl-logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.cv-dl-logo span { color: var(--amber); }
+
+/* ─── Main area ─── */
+.cv-dl-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+/* ─── Card ─── */
+.cv-dl-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .cv-dl-box { padding: 32px 20px; }
+}
+
+/* Spinner (loading) */
+.cv-dl-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: cv-dl-spin 0.75s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes cv-dl-spin { to { transform: rotate(360deg); } }
+
+.cv-dl-loading-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* ─── Success ─── */
+.cv-dl-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: var(--amber-dim);
+  border: 1px solid rgba(217,119,6,0.22);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  color: var(--amber);
+}
+
+.cv-dl-box h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px;
+  line-height: 1.2;
+}
+
+.cv-dl-box p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0 0 8px;
+}
+
+.cv-dl-fallback {
+  font-size: 12px !important;
+  color: var(--text-dim) !important;
+  margin-top: 12px !important;
+}
+
+.cv-dl-fallback a {
+  color: var(--amber);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.cv-dl-fallback a:hover { color: var(--amber-lt); }
+
+.cv-dl-back-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 11px 32px;
+  background: var(--amber);
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  font-family: var(--sans);
+}
+
+.cv-dl-back-btn:hover {
+  background: var(--amber-lt);
+  transform: translateY(-1px);
+}
+
+/* ─── Error ─── */
+.cv-dl-box--error {
+  border-color: rgba(239,68,68,0.18);
+}
+
+.cv-dl-error-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.18);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  color: #ef4444;
+}
+
+.cv-dl-cta-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 11px 32px;
+  background: var(--amber);
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  font-family: var(--sans);
+}
+
+.cv-dl-cta-btn:hover {
+  background: var(--amber-lt);
+  transform: translateY(-1px);
+}
+
+.cv-dl-back-link {
+  display: block;
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+
+.cv-dl-back-link:hover { color: var(--amber); }
