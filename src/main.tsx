@@ -12,6 +12,7 @@ import { ProjectsAdmin } from './pages/admin/Projects.tsx';
 import { MessagesAdmin } from './pages/admin/Messages.tsx';
 import { CvUpload } from './pages/admin/CvUpload.tsx';
 import { CvRequests } from './pages/admin/CvRequests.tsx';
+import { ChangePassword } from './pages/admin/ChangePassword.tsx';
 import { UserLogin } from './pages/auth/Login.tsx';
 import { UserRegister } from './pages/auth/Register.tsx';
 import { AuthProvider } from './contexts/AuthContext.tsx';
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "cv-requests",
         element: <CvRequests />,
+      },
+      {
+        path: "password",
+        element: <ChangePassword />,
       },
     ],
   },

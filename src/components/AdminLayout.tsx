@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { pb } from '../lib/pocketbase';
-import { LayoutDashboard, LogOut, Code2, Presentation, Home, Mail, FileUp, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, LogOut, Code2, Presentation, Home, Mail, FileUp, ClipboardList, KeyRound } from 'lucide-react';
 
 export const AdminLayout = () => {
     const location = useLocation();
@@ -47,6 +47,9 @@ export const AdminLayout = () => {
                     </Link>
                     <Link to="/admin/cv-requests" className={`nav-link ${location.pathname === '/admin/cv-requests' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
                         <ClipboardList size={20} /> Pedidos de CV
+                    </Link>
+                    <Link to="/admin/password" className={`nav-link ${location.pathname === '/admin/password' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
+                        <KeyRound size={20} /> Alterar Senha
                     </Link>
                 </nav>
 
