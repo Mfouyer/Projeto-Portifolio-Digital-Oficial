@@ -71,18 +71,18 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
   return (
     <AnimatePresence>
       {open && (
-        <>
-          {/* Overlay */}
-          <motion.div
-            className="cv-modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            onClick={onClose}
-          />
-
-          {/* Modal */}
+        /* Overlay is the flex container that centers the modal.
+           Framer Motion animates opacity on the overlay and y/scale on the
+           inner card without conflicting with CSS transform-based positioning. */
+        <motion.div
+          className="cv-modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
+          onClick={onClose}
+        >
+          {/* Modal card — click stops propagation so overlay onClick doesn't fire */}
           <motion.div
             className="cv-modal"
             role="dialog"
@@ -92,6 +92,7 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+            onClick={(e) => e.stopPropagation()}
           >
             <button className="cv-modal-close" onClick={onClose} aria-label="Fechar">
               <X size={18} />
@@ -188,7 +189,7 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
               </motion.div>
             )}
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );
