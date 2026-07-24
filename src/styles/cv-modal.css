@@ -128,6 +128,18 @@
 .cv-form-field input:focus,
 .cv-form-field select:focus { border-color: #D97706; }
 
+/* Validation error state */
+.cv-form-field--error input,
+.cv-form-field--error select {
+  border-color: #ef4444;
+  background: rgba(239,68,68,0.04);
+}
+
+.cv-form-field--error input:focus,
+.cv-form-field--error select:focus {
+  border-color: #ef4444;
+}
+
 /* RGPD consent */
 .cv-consent {
   font-size: 11px;

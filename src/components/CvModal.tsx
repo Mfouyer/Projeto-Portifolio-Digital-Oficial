@@ -16,21 +16,23 @@ const ROLES: Role[] = ['recruiter', 'client', 'partner', 'enthusiast', 'other'];
 
 export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
   const { t } = useLanguage();
-  const [form, setForm] = React.useState({ name: '', role: '' as Role | '', email: '' });
+  const [form, setForm] = React.useState({ name: '', company: '', role: '' as Role | '', email: '' });
   const [honeypot, setHoneypot] = React.useState('');
   const [submitting, setSubmitting] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [fieldErrors, setFieldErrors] = React.useState({ name: false, company: false, role: false, email: false });
   const emailRef = React.useRef('');
 
   // Reset form when modal closes
   React.useEffect(() => {
     if (!open) {
       const timer = setTimeout(() => {
-        setForm({ name: '', role: '', email: '' });
+        setForm({ name: '', company: '', role: '', email: '' });
         setSubmitted(false);
         setError('');
         setHoneypot('');
+        setFieldErrors({ name: false, company: false, role: false, email: false });
         emailRef.current = '';
       }, 300);
       return () => clearTimeout(timer);
@@ -47,7 +49,16 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return; // honeypot triggered — silent discard
-    if (!form.name.trim() || !form.role || !form.email.trim()) return;
+
+    // Validate all fields — mark which are empty
+    const errors = {
+      name: !form.name.trim(),
+      company: !form.company.trim(),
+      role: !form.role,
+      email: !form.email.trim(),
+    };
+    setFieldErrors(errors);
+    if (Object.values(errors).some(Boolean)) return;
 
     setSubmitting(true);
     setError('');
@@ -56,6 +67,7 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
     try {
       await pb.collection('cv_requests').create({
         name: form.name.trim(),
+        company: form.company.trim(),
         role: form.role,
         email: form.email.trim(),
       });
@@ -118,22 +130,42 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
                     onChange={e => setHoneypot(e.target.value)}
                   />
 
-                  <div className="cv-form-field">
+                  <div className={`cv-form-field${fieldErrors.name ? ' cv-form-field--error' : ''}`}>
                     <input
                       type="text"
                       placeholder={t('cv.field.name') as string}
                       value={form.name}
-                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                      onChange={e => {
+                        setForm(f => ({ ...f, name: e.target.value }));
+                        if (fieldErrors.name) setFieldErrors(fe => ({ ...fe, name: false }));
+                      }}
                       required
                       autoFocus
                       autoComplete="name"
                     />
                   </div>
 
-                  <div className="cv-form-field">
+                  <div className={`cv-form-field${fieldErrors.company ? ' cv-form-field--error' : ''}`}>
+                    <input
+                      type="text"
+                      placeholder={t('cv.field.company') as string}
+                      value={form.company}
+                      onChange={e => {
+                        setForm(f => ({ ...f, company: e.target.value }));
+                        if (fieldErrors.company) setFieldErrors(fe => ({ ...fe, company: false }));
+                      }}
+                      required
+                      autoComplete="organization"
+                    />
+                  </div>
+
+                  <div className={`cv-form-field${fieldErrors.role ? ' cv-form-field--error' : ''}`}>
                     <select
                       value={form.role}
-                      onChange={e => setForm(f => ({ ...f, role: e.target.value as Role }))}
+                      onChange={e => {
+                        setForm(f => ({ ...f, role: e.target.value as Role }));
+                        if (fieldErrors.role) setFieldErrors(fe => ({ ...fe, role: false }));
+                      }}
                       required
                     >
                       <option value="" disabled>
@@ -147,12 +179,15 @@ export const CvModal: React.FC<CvModalProps> = ({ open, onClose }) => {
                     </select>
                   </div>
 
-                  <div className="cv-form-field">
+                  <div className={`cv-form-field${fieldErrors.email ? ' cv-form-field--error' : ''}`}>
                     <input
                       type="email"
                       placeholder={t('cv.field.email') as string}
                       value={form.email}
-                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      onChange={e => {
+                        setForm(f => ({ ...f, email: e.target.value }));
+                        if (fieldErrors.email) setFieldErrors(fe => ({ ...fe, email: false }));
+                      }}
                       required
                       autoComplete="email"
                     />
