@@ -155,6 +155,8 @@ export const I18N: Record<Lang, Dict> = {
     'news.loading': 'A carregar notícias…',
     'news.empty': 'O radar ainda não recolheu notícias hoje. Volta mais tarde.',
     'news.back': '← Portfólio',
+    'news.ticker_label': 'AO VIVO',
+    'news.read_min': 'min de leitura',
 
     'cv.btn': 'Download CV',
     'cv.modal.title': 'Receber o CV',
@@ -338,6 +340,8 @@ export const I18N: Record<Lang, Dict> = {
     'news.loading': 'Loading news…',
     'news.empty': "The radar hasn't collected any news today yet. Check back later.",
     'news.back': '← Portfolio',
+    'news.ticker_label': 'LIVE',
+    'news.read_min': 'min read',
 
     'cv.btn': 'Download CV',
     'cv.modal.title': 'Get the CV',
@@ -521,6 +525,8 @@ export const I18N: Record<Lang, Dict> = {
     'news.loading': 'Cargando noticias…',
     'news.empty': 'El radar todavía no ha recogido noticias hoy. Vuelve más tarde.',
     'news.back': '← Portafolio',
+    'news.ticker_label': 'EN VIVO',
+    'news.read_min': 'min de lectura',
 
     'cv.btn': 'Descargar CV',
     'cv.modal.title': 'Obtener el CV',
