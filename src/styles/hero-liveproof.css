@@ -2,6 +2,13 @@
    hero-liveproof.css
    Styles for LiveProofPanel and HeroTicker.
    Scoped under .architect-page — no global bleed.
+
+   LAYOUT SHIFT FIX (2026-07-28):
+   .lp-body uses a fixed height (not min-height) calculated
+   from the worst-case scenario across PT/EN/ES.
+   All dynamic elements use visibility/opacity transitions,
+   never conditional DOM insertion, so the panel never
+   changes its box dimensions during animation.
    ─────────────────────────────────────────────────────────── */
 
 /* ══════════════════════════════════════════════════════════
@@ -12,7 +19,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 56px;
-  align-items: center;
+  /* align-items: start — NOT center.
+     Using center means any height change in hero-left (tagline
+     wrapping during typing) shifts the right panel vertically.
+     start pins both columns to the top so the right panel is
+     immune to height changes in the left. */
+  align-items: start;
   width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
@@ -119,13 +131,30 @@
   50%       { opacity: 0.3; }
 }
 
-/* ── Body ── */
+/* ── Body ──
+   FIXED HEIGHT — calculated from worst-case content across
+   all 3 languages. Breakdown (desktop):
+     padding-top:     20px
+     badge:           24px  + gap 10px
+     prompt (2 lines):40px  + gap 10px   ← reserved via min-height
+     step 1:          18px  + gap 10px
+     step 2:          18px  + gap 10px
+     step 3:          18px  + gap 10px
+     result:          45px  + margin-top 4px
+     padding-bottom:  24px
+   Total body content: ~251px → use 268px for safety.
+   Mobile (<900px) — panel is narrower; prompt may wrap more;
+   use 296px to absorb up to 3 extra lines of wrapping. */
+
 .architect-page .lp-body {
   padding: 20px 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 188px;
+  /* FIXED height — never auto-grow. This is the anti-shift contract. */
+  height: 268px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* ── Type badge ── */
@@ -143,6 +172,8 @@
   padding: 3px 8px;
   align-self: flex-start;
   margin-bottom: 2px;
+  /* Reserve space even when invisible */
+  flex-shrink: 0;
 }
 
 .architect-page .lp-type-badge--animate {
@@ -154,13 +185,18 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Prompt line ── */
+/* ── Prompt line ──
+   lp-prompt-text--fixed reserves exactly 2 lines of height
+   at all times so that character-by-character typing and any
+   word-wrap NEVER change the total box height. */
 .architect-page .lp-prompt-line {
   display: flex;
   align-items: flex-start;
   gap: 8px;
   font-size: 13px;
   line-height: 1.5;
+  /* Reserve the 2-line slot so this row never grows/shrinks */
+  flex-shrink: 0;
 }
 
 .architect-page .lp-prompt-arrow {
@@ -176,7 +212,28 @@
   word-break: break-word;
 }
 
-/* ── Amber blinking cursor ── */
+/* Fixed 2-line slot: 13px * 1.5 lh * 2 rows = 39px.
+   We use min-height so single-line prompts still align top. */
+.architect-page .lp-prompt-text--fixed {
+  min-height: 39px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* ── Inline cursor (sits after text inside the prompt span) ── */
+.architect-page .lp-cursor--inline {
+  display: inline-block;
+  width: 2px;
+  height: 13px;
+  background: var(--amber);
+  vertical-align: middle;
+  animation: lp-blink 0.85s step-end infinite;
+  border-radius: 1px;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+/* Keep the old .lp-cursor for any other usage */
 .architect-page .lp-cursor {
   display: inline-block;
   width: 2px;
@@ -199,7 +256,11 @@
   50%       { opacity: 0; }
 }
 
-/* ── Log lines ── */
+/* ── Log lines ──
+   ALL 3 slots always in DOM. Hidden = visibility:hidden so
+   the slot still occupies its space. No DOM insertion during
+   animation → zero layout shift. */
+
 .architect-page .lp-log-line {
   display: flex;
   align-items: baseline;
@@ -207,15 +268,35 @@
   font-size: 11.5px;
   line-height: 1.55;
   color: var(--text-muted);
+  /* Always reserve the slot height */
+  flex-shrink: 0;
+  /* Default: invisible but takes up space */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.22s ease;
 }
 
-.architect-page .lp-log-line--in {
+/* Hidden state — explicit class, redundant with default but clear */
+.architect-page .lp-log-line--hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Visible state — reveals in place with a fade+slide */
+.architect-page .lp-log-line--visible {
+  visibility: visible;
+  opacity: 1;
   animation: lp-slide-in 0.22s ease both;
 }
 
 @keyframes lp-slide-in {
   from { opacity: 0; transform: translateX(-6px); }
   to   { opacity: 1; transform: translateX(0); }
+}
+
+/* The old --in class is no longer used but kept for safety */
+.architect-page .lp-log-line--in {
+  animation: lp-slide-in 0.22s ease both;
 }
 
 .architect-page .lp-ts {
@@ -245,7 +326,10 @@
   word-break: break-word;
 }
 
-/* ── Result flourish ── */
+/* ── Result flourish ──
+   Always in DOM. Hidden = invisible + no pointer events.
+   The slot height is always reserved so revealing it never
+   pushes anything else. */
 .architect-page .lp-result {
   display: flex;
   align-items: center;
@@ -259,6 +343,21 @@
   background: rgba(217,119,6,0.08);
   border: 1px solid rgba(217,119,6,0.22);
   border-radius: 6px;
+  /* Default: takes up space but invisible */
+  visibility: hidden;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity 0.35s ease;
+}
+
+.architect-page .lp-result--hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.architect-page .lp-result--visible {
+  visibility: visible;
+  opacity: 1;
 }
 
 .architect-page .lp-result--in {
@@ -275,6 +374,33 @@
   color: var(--amber);
   flex-shrink: 0;
   font-style: normal;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE OVERRIDE
+   At max-width 900px the panel is full-width and narrower,
+   so long prompts may wrap to an extra line.
+   Use a taller fixed height (296px) to absorb up to 3 extra
+   wrapped lines without any shift.
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .architect-page .hero-right {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .architect-page .lp-body {
+    /* At 390px viewport, prompt can wrap 2-3 lines.
+       Reserve enough space for worst-case: 268 + 28px = 296px */
+    height: 296px;
+  }
+
+  /* Reserve 3 lines of prompt at mobile */
+  .architect-page .lp-prompt-text--fixed {
+    min-height: 58px; /* 13px * 1.5 * 3 rows = 58.5px */
+  }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -361,17 +487,4 @@
   gap: 14px;
   flex-wrap: wrap;
   margin-top: 40px;
-}
-
-/* ── Mobile hero right panel ── */
-@media (max-width: 900px) {
-  .architect-page .hero-right {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .architect-page .lp-body {
-    min-height: 160px;
-  }
 }
