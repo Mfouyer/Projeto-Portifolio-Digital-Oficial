@@ -389,43 +389,36 @@
 
 .architect-page .hero-title .accent { color: var(--amber); }
 
+/* Hero services list — static, deterministic height, no typing animation */
 .architect-page .hero-tagline {
-  font-size: clamp(17px, 2.5vw, 21px);
-  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
   max-width: 580px;
   margin-bottom: 48px;
-  line-height: 1.6;
-  /* Reserve space for 2 lines (desktop) so the typing animation
-     never changes this element's height and shifts the layout.
-     2 lines * font-size 21px * line-height 1.6 = 67.2px -> 68px.
-     The hero-split uses align-items:start so height changes here
-     don't affect the right panel, but this reserves the slot so
-     the tagline's own margin-bottom doesn't shift either. */
-  min-height: 68px;
+  line-height: 2;
+  font-family: var(--sans);
+  font-size: clamp(13px, 1.6vw, 15px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-/* Mobile: tagline width narrows, long phrases wrap to 3+ lines.
-   Reserve 3 lines to prevent layout shift in the stacked layout.
-   3 lines * font-size ~18px (clamp min) * line-height 1.6 = 86.4px -> 90px */
-@media (max-width: 900px) {
-  .architect-page .hero-tagline {
-    min-height: 90px;
-  }
+.architect-page .hero-service-item {
+  white-space: nowrap;
+  transition: color 0.2s;
 }
 
-.architect-page .typed-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1.1em;
-  background: var(--amber);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: arch-blink 0.9s step-end infinite;
+.architect-page .hero-service-item:hover {
+  color: rgba(217, 119, 6, 0.75);
 }
 
-@keyframes arch-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.architect-page .hero-service-sep {
+  color: var(--amber);
+  font-weight: 700;
+  white-space: pre;
+  margin: 0 2px;
 }
 
 .architect-page .hero-actions {

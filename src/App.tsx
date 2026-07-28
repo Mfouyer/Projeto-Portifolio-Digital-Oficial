@@ -14,6 +14,7 @@ import LangSwitcher from './components/LangSwitcher';
 import { CvModal } from './components/CvModal';
 import StackTecnico from './components/StackTecnico';
 import { useLanguage } from './contexts/LanguageContext';
+import { I18N } from './i18n/translations';
 import profilePhoto from './assets/marcos-fouyer.jpg';
 import './App.css';
 import './styles/architect.css';
@@ -144,33 +145,6 @@ const FadeUp: React.FC<{ children: React.ReactNode; delay?: number; className?: 
   </motion.div>
 );
 
-// Efeito de "digitação" da tagline do hero — reinicia quando o idioma muda.
-function useTypedText(phrases: string[]): string {
-  const [text, setText] = React.useState('');
-  React.useEffect(() => {
-    setText('');
-    let phraseIdx = 0, charIdx = 0, deleting = false;
-    let timer: ReturnType<typeof setTimeout>;
-    const tick = () => {
-      const current = phrases[phraseIdx];
-      if (!current) return;
-      if (!deleting) {
-        charIdx++;
-        setText(current.slice(0, charIdx));
-        if (charIdx === current.length) { deleting = true; timer = setTimeout(tick, 2400); return; }
-        timer = setTimeout(tick, 42);
-      } else {
-        charIdx--;
-        setText(current.slice(0, charIdx));
-        if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; timer = setTimeout(tick, 320); return; }
-        timer = setTimeout(tick, 22);
-      }
-    };
-    tick();
-    return () => clearTimeout(timer);
-  }, [phrases]);
-  return text;
-}
 
 /* ════════════════════════════════════════════════════════════
    PROJECT HERO VIDEO
@@ -271,7 +245,7 @@ const OpenClaudeArchVideo: React.FC = () => {
    ════════════════════════════════════════════════════════════ */
 
 const App: React.FC = () => {
-  const { t, typed: typedPhrases, lang } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const [skills, setSkills] = React.useState<any[]>([]);
   const [projects, setProjects] = React.useState<any[]>([]);
@@ -285,8 +259,6 @@ const App: React.FC = () => {
   const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
-
-  const typed = useTypedText(typedPhrases);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -386,7 +358,12 @@ const App: React.FC = () => {
             </h1>
 
             <p className="hero-tagline">
-              {t('hero.tagline.prefix')} <span>{typed}</span><span className="typed-cursor"></span>
+              {(I18N[lang]['hero.services'] as string[]).map((item, i, arr) => (
+                <React.Fragment key={item}>
+                  <span className="hero-service-item">{item}</span>
+                  {i < arr.length - 1 && <span className="hero-service-sep" aria-hidden="true"> · </span>}
+                </React.Fragment>
+              ))}
             </p>
 
             <div className="hero-actions hero-actions--liveproof">
