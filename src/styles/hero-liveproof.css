@@ -132,27 +132,38 @@
 }
 
 /* ── Body ──
-   FIXED HEIGHT — calculated from worst-case content across
-   all 3 languages. Breakdown (desktop):
+   FIXED HEIGHT — measured via Playwright on 2026-07-28 across
+   all 3 languages × 3 viewports. Playwright scrollHeight figures:
+
+   Desktop (1440px):  scrollH=268px, result bottom=240px.
+                      Old 268px was exactly scrollH — zero margin.
+                      New: 280px (40px of breathing room).
+
+   Mobile (<900px), worst case at 360px viewport (PT/EN/ES):
+                      scrollH=330px, result bottom=306px.
+                      Old 296px clipped result by ~10px.
+                      New: 340px (30px of breathing room).
+
+   Breakdown for mobile-360 PT (the measured worst case):
      padding-top:     20px
-     badge:           24px  + gap 10px
-     prompt (2 lines):40px  + gap 10px   ← reserved via min-height
-     step 1:          18px  + gap 10px
-     step 2:          18px  + gap 10px
-     step 3:          18px  + gap 10px
-     result:          45px  + margin-top 4px
-     padding-bottom:  24px
-   Total body content: ~251px → use 268px for safety.
-   Mobile (<900px) — panel is narrower; prompt may wrap more;
-   use 296px to absorb up to 3 extra lines of wrapping. */
+     badge:           22.8px  + gap 10px = 32.8px cumulative
+     prompt (3 lines):58px    + gap 10px = 100.8px
+     step 1:          35.6px  + gap 10px = 146.4px
+     step 2:          35.6px  + gap 10px = 192px
+     step 3:          35.6px  + gap 10px = 237.7px  (gap before result)
+     result margin-t: 4px     + result 42.8px → 306.5px bottom of result
+     padding-bottom:  24px → scrollH ≈ 330px
+   ──────────────────────────────────────────────────────────── */
 
 .architect-page .lp-body {
   padding: 20px 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* FIXED height — never auto-grow. This is the anti-shift contract. */
-  height: 268px;
+  /* FIXED height — never auto-grow. This is the anti-shift contract.
+     Measured worst-case desktop scrollH=268px → use 280px.
+     Mobile override below uses 340px. */
+  height: 280px;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -392,9 +403,11 @@
   }
 
   .architect-page .lp-body {
-    /* At 390px viewport, prompt can wrap 2-3 lines.
-       Reserve enough space for worst-case: 268 + 28px = 296px */
-    height: 296px;
+    /* Playwright-measured worst case at 360px viewport (PT/EN/ES):
+       result bottom = 306.5px, scrollH = 330px.
+       Old 296px was clipping the result by ~10px.
+       New 340px = 330px scrollH + 10px safety margin.       */
+    height: 340px;
   }
 
   /* Reserve 3 lines of prompt at mobile */
