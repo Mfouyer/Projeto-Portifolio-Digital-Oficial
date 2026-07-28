@@ -397,15 +397,6 @@ const App: React.FC = () => {
                 <Download size={16} /> {t('cv.btn')}
               </button>
             </div>
-
-            <div className="hero-meta">
-              {HERO_STATS.map((s) => (
-                <div className="hero-stat" key={s.labelKey}>
-                  <span className="hero-stat-number">{s.number}</span>
-                  <span className="hero-stat-label">{t(s.labelKey)}</span>
-                </div>
-              ))}
-            </div>
           </motion.div>
 
           {/* Right — Live Proof panel */}
@@ -416,6 +407,23 @@ const App: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.18 }}
           >
             <LiveProofPanel />
+          </motion.div>
+
+          {/* Stats row — spans full width, below both columns */}
+          <motion.div
+            className="hero-stats-row"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
+            <div className="hero-meta">
+              {HERO_STATS.map((s) => (
+                <div className="hero-stat" key={s.labelKey}>
+                  <span className="hero-stat-number">{s.number}</span>
+                  <span className="hero-stat-label">{t(s.labelKey)}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
 

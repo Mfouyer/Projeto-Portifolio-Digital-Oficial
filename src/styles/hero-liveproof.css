@@ -24,7 +24,7 @@
 @media (max-width: 900px) {
   .architect-page .hero-split {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 }
 
@@ -38,6 +38,20 @@
 .architect-page .hero-right {
   position: relative;
   z-index: 2;
+}
+
+/* Stats row — third grid row, full width */
+.architect-page .hero-stats-row {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 2;
+  padding-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .architect-page .hero-stats-row {
+    padding-top: 0;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════
