@@ -9,8 +9,13 @@ import { useLanguage } from '../contexts/LanguageContext';
      3. AGENT  — "I want an agent 24/7"
    Each scenario types a client prompt, then runs 3 log
    steps, then lands on a success line.
-   Respects prefers-reduced-motion: shows a static snapshot
-   of the third scenario (agent) instead of animating.
+
+   LAYOUT SHIFT FIX (2026-07-28):
+   All elements are rendered in the DOM from t=0 with
+   visibility:hidden or opacity:0. Animation only changes
+   visibility/opacity — never adds/removes DOM nodes, never
+   changes height. The body has a fixed height so the panel
+   never reflowes the page.
    ────────────────────────────────────────────────────────── */
 
 interface Scenario {
@@ -171,7 +176,8 @@ export const LiveProofPanel: React.FC = () => {
           <div className="lp-type-badge">{s.type}</div>
           <div className="lp-prompt-line">
             <span className="lp-prompt-arrow">{'>'}</span>
-            <span className="lp-prompt-text">{s.prompt}</span>
+            {/* Reserve 2 lines of prompt height via lp-prompt-text--fixed */}
+            <span className="lp-prompt-text lp-prompt-text--fixed">{s.prompt}</span>
           </div>
           {s.steps.map((step, i) => (
             <div className="lp-log-line" key={i}>
@@ -181,7 +187,7 @@ export const LiveProofPanel: React.FC = () => {
             </div>
           ))}
           <div className="lp-result">
-            <span className="lp-check">{'checkmark'}</span>
+            <span className="lp-check" aria-hidden="true">&#10003;</span>
             <span>{s.result}</span>
           </div>
         </div>
@@ -189,7 +195,12 @@ export const LiveProofPanel: React.FC = () => {
     );
   }
 
-  /* ── Animated panel ── */
+  /* ── Animated panel ──
+     KEY PRINCIPLE: every element always in the DOM.
+     Visibility is controlled by CSS classes (lp-*--hidden,
+     lp-*--visible, lp-*--in). No elements are conditionally
+     mounted/unmounted during animation — that is what was
+     causing the layout shift. */
   return (
     <div className="lp-panel" aria-label="Agent runtime demo" aria-live="polite">
       {/* Title bar */}
@@ -203,27 +214,35 @@ export const LiveProofPanel: React.FC = () => {
         </span>
       </div>
 
-      {/* Body */}
+      {/* Body — fixed height, never grows */}
       <div className="lp-body">
-        {/* Scenario type badge */}
-        <div className="lp-type-badge lp-type-badge--animate" key={`badge-${state.scenarioIdx}`}>
+        {/* Scenario type badge — always present, fades between scenarios */}
+        <div
+          className={`lp-type-badge lp-type-badge--animate`}
+          key={`badge-${state.scenarioIdx}`}
+        >
           {scenario.type}
         </div>
 
-        {/* Client prompt line */}
+        {/* Client prompt line — always present.
+            lp-prompt-text--fixed reserves 2 lines via min-height
+            so wrap during typing never shifts layout. */}
         <div className="lp-prompt-line">
           <span className="lp-prompt-arrow">{'>'}</span>
-          <span className="lp-prompt-text">{state.promptDisplayed}</span>
-          {state.phase.kind === 'typing-prompt' && (
-            <span className="lp-cursor" aria-hidden="true" />
-          )}
+          <span className="lp-prompt-text lp-prompt-text--fixed">
+            {state.promptDisplayed}
+            {state.phase.kind === 'typing-prompt' && (
+              <span className="lp-cursor lp-cursor--inline" aria-hidden="true" />
+            )}
+          </span>
         </div>
 
-        {/* Log steps */}
-        {scenario.steps.slice(0, state.stepsDisplayed).map((step, i) => (
+        {/* Log steps — ALL 3 always in DOM, revealed by class */}
+        {scenario.steps.map((step, i) => (
           <div
-            className="lp-log-line lp-log-line--in"
-            key={`${state.scenarioIdx}-step-${i}`}
+            className={`lp-log-line${i < state.stepsDisplayed ? ' lp-log-line--visible' : ' lp-log-line--hidden'}`}
+            key={`step-slot-${i}`}
+            aria-hidden={i >= state.stepsDisplayed}
           >
             <span className="lp-ts">{TIMESTAMPS[i]}</span>
             <span className="lp-status lp-status--ok">OK</span>
@@ -231,19 +250,14 @@ export const LiveProofPanel: React.FC = () => {
           </div>
         ))}
 
-        {/* Result flourish */}
-        {state.showResult && (
-          <div className="lp-result lp-result--in" key={`result-${state.scenarioIdx}`}>
-            <span className="lp-check" aria-hidden="true">&#10003;</span>
-            <span>{scenario.result}</span>
-          </div>
-        )}
-
-        {/* Idle cursor after all steps done and no result yet */}
-        {!state.showResult &&
-          state.phase.kind !== 'typing-prompt' && (
-            <span className="lp-cursor lp-cursor--idle" aria-hidden="true" />
-          )}
+        {/* Result flourish — always in DOM, hidden until showResult */}
+        <div
+          className={`lp-result${state.showResult ? ' lp-result--visible lp-result--in' : ' lp-result--hidden'}`}
+          aria-hidden={!state.showResult}
+        >
+          <span className="lp-check" aria-hidden="true">&#10003;</span>
+          <span>{scenario.result}</span>
+        </div>
       </div>
     </div>
   );

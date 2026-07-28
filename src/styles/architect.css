@@ -395,6 +395,22 @@
   max-width: 580px;
   margin-bottom: 48px;
   line-height: 1.6;
+  /* Reserve space for 2 lines (desktop) so the typing animation
+     never changes this element's height and shifts the layout.
+     2 lines * font-size 21px * line-height 1.6 = 67.2px -> 68px.
+     The hero-split uses align-items:start so height changes here
+     don't affect the right panel, but this reserves the slot so
+     the tagline's own margin-bottom doesn't shift either. */
+  min-height: 68px;
+}
+
+/* Mobile: tagline width narrows, long phrases wrap to 3+ lines.
+   Reserve 3 lines to prevent layout shift in the stacked layout.
+   3 lines * font-size ~18px (clamp min) * line-height 1.6 = 86.4px -> 90px */
+@media (max-width: 900px) {
+  .architect-page .hero-tagline {
+    min-height: 90px;
+  }
 }
 
 .architect-page .typed-cursor {
