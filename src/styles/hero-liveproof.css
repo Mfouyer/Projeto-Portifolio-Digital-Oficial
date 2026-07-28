@@ -1,0 +1,377 @@
+/* ───────────────────────────────────────────────────────────
+   hero-liveproof.css
+   Styles for LiveProofPanel and HeroTicker.
+   Scoped under .architect-page — no global bleed.
+   ─────────────────────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════════════
+   HERO LAYOUT — two-column on desktop, stack on mobile
+   ══════════════════════════════════════════════════════════ */
+
+.architect-page .hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  /* Make it fill the flex parent (#hero) */
+  align-self: center;
+}
+
+@media (max-width: 900px) {
+  .architect-page .hero-split {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Left column: headline + copy */
+.architect-page .hero-left {
+  position: relative;
+  z-index: 2;
+}
+
+/* Right column: live proof panel */
+.architect-page .hero-right {
+  position: relative;
+  z-index: 2;
+}
+
+/* Stats row — third grid row, full width */
+.architect-page .hero-stats-row {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 2;
+  padding-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .architect-page .hero-stats-row {
+    padding-top: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   LIVE PROOF PANEL
+   ══════════════════════════════════════════════════════════ */
+
+.architect-page .lp-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--mono);
+  box-shadow:
+    0 0 0 1px rgba(217,119,6,0.08),
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 48px rgba(217,119,6,0.06);
+  position: relative;
+}
+
+/* ── Title bar ── */
+.architect-page .lp-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 14px;
+}
+
+.architect-page .lp-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.architect-page .lp-dot--red    { background: #FF5F56; }
+.architect-page .lp-dot--yellow { background: #FFBD2E; }
+.architect-page .lp-dot--green  { background: #27C93F; }
+
+.architect-page .lp-titlebar-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-left: 8px;
+  flex: 1;
+}
+
+.architect-page .lp-titlebar-live {
+  display: flex;
+  align-items: center;
+}
+
+.architect-page .lp-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #27C93F;
+  animation: lp-pulse 2s ease-in-out infinite;
+}
+
+@keyframes lp-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Body ── */
+.architect-page .lp-body {
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 188px;
+}
+
+/* ── Type badge ── */
+.architect-page .lp-type-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(217,119,6,0.25);
+  border-radius: 4px;
+  padding: 3px 8px;
+  align-self: flex-start;
+  margin-bottom: 2px;
+}
+
+.architect-page .lp-type-badge--animate {
+  animation: lp-fadein 0.25s ease both;
+}
+
+@keyframes lp-fadein {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Prompt line ── */
+.architect-page .lp-prompt-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.architect-page .lp-prompt-arrow {
+  color: var(--amber);
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  user-select: none;
+}
+
+.architect-page .lp-prompt-text {
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* ── Amber blinking cursor ── */
+.architect-page .lp-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 13px;
+  background: var(--amber);
+  vertical-align: middle;
+  animation: lp-blink 0.85s step-end infinite;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.architect-page .lp-cursor--idle {
+  margin-left: 2px;
+  margin-top: 2px;
+  align-self: flex-start;
+}
+
+@keyframes lp-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Log lines ── */
+.architect-page .lp-log-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.architect-page .lp-log-line--in {
+  animation: lp-slide-in 0.22s ease both;
+}
+
+@keyframes lp-slide-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.architect-page .lp-ts {
+  color: var(--text-dim);
+  font-size: 10px;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+.architect-page .lp-status {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.architect-page .lp-status--ok {
+  color: #27C93F;
+  background: rgba(39,201,63,0.1);
+  border: 1px solid rgba(39,201,63,0.25);
+}
+
+.architect-page .lp-log-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* ── Result flourish ── */
+.architect-page .lp-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(217,119,6,0.08);
+  border: 1px solid rgba(217,119,6,0.22);
+  border-radius: 6px;
+}
+
+.architect-page .lp-result--in {
+  animation: lp-result-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes lp-result-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.architect-page .lp-check {
+  font-size: 15px;
+  color: var(--amber);
+  flex-shrink: 0;
+  font-style: normal;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HERO TICKER (credibility strip)
+   ══════════════════════════════════════════════════════════ */
+
+.architect-page .hero-ticker-wrap {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+  background: rgba(10,10,11,0.7);
+  /* Fade edges */
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+}
+
+.architect-page .hero-ticker {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.architect-page .hero-ticker__track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: hero-ticker-scroll 50s linear infinite;
+  will-change: transform;
+}
+
+@keyframes hero-ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.architect-page .hero-ticker__item {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 6px;
+}
+
+.architect-page .hero-ticker__sep {
+  font-size: 9px;
+  color: var(--amber);
+  opacity: 0.55;
+  margin: 0 10px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Static variant (prefers-reduced-motion) */
+.architect-page .hero-ticker--static {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 24px;
+  height: auto;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architect-page .hero-ticker__track {
+    animation: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CTA — hero has 1 primary CTA in redesign
+   The "skills" secondary btn is hidden in the hero-split
+   layout since it adds visual clutter.
+   ══════════════════════════════════════════════════════════ */
+
+.architect-page .hero-actions--liveproof {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+/* ── Mobile hero right panel ── */
+@media (max-width: 900px) {
+  .architect-page .hero-right {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .architect-page .lp-body {
+    min-height: 160px;
+  }
+}

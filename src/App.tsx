@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Shield, ArrowDown, Github, Linkedin, Mail,
-  ExternalLink, Send, Code2, FolderOpen, LayoutGrid, Download, icons,
+  ExternalLink, Send, Code2, FolderOpen, Download, icons,
 } from 'lucide-react';
 import { pb } from './lib/pocketbase';
 // OpenClaudeDiagram SVG substituído pelo vídeo agent-team (aprovado pelo Marcos 24/jul ~00:10)
 import HeroMotion from './components/HeroMotion';
+import LiveProofPanel from './components/LiveProofPanel';
+import HeroTicker from './components/HeroTicker';
 import LangSwitcher from './components/LangSwitcher';
 import { CvModal } from './components/CvModal';
 import StackTecnico from './components/StackTecnico';
@@ -15,6 +17,7 @@ import { useLanguage } from './contexts/LanguageContext';
 import profilePhoto from './assets/marcos-fouyer.jpg';
 import './App.css';
 import './styles/architect.css';
+import './styles/hero-liveproof.css';
 
 /* ════════════════════════════════════════════════════════════
    CONTEÚDO ESTÁTICO controlado por i18n (PT/EN/ES).
@@ -366,9 +369,11 @@ const App: React.FC = () => {
       <section id="hero">
         <HeroMotion />
         <div className="hero-glow"></div>
-        <div className="container">
+
+        <div className="hero-split">
+          {/* Left — headline + copy + CTA */}
           <motion.div
-            className="hero-content"
+            className="hero-left"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
@@ -384,18 +389,33 @@ const App: React.FC = () => {
               {t('hero.tagline.prefix')} <span>{typed}</span><span className="typed-cursor"></span>
             </p>
 
-            <div className="hero-actions">
+            <div className="hero-actions hero-actions--liveproof">
               <a href="#projects" className="btn-primary">
                 <FolderOpen size={16} /> {t('hero.btn.projects')}
-              </a>
-              <a href="#capabilities" className="btn-secondary">
-                <LayoutGrid size={16} /> {t('hero.btn.skills')}
               </a>
               <button className="btn-secondary" onClick={() => setCvModalOpen(true)}>
                 <Download size={16} /> {t('cv.btn')}
               </button>
             </div>
+          </motion.div>
 
+          {/* Right — Live Proof panel */}
+          <motion.div
+            className="hero-right"
+            initial={{ opacity: 0, x: 32 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.18 }}
+          >
+            <LiveProofPanel />
+          </motion.div>
+
+          {/* Stats row — spans full width, below both columns */}
+          <motion.div
+            className="hero-stats-row"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
             <div className="hero-meta">
               {HERO_STATS.map((s) => (
                 <div className="hero-stat" key={s.labelKey}>
@@ -412,6 +432,11 @@ const App: React.FC = () => {
           <ArrowDown size={16} />
         </div>
       </section>
+
+      {/* ─── Credibility ticker ─── */}
+      <div className="hero-ticker-wrap">
+        <HeroTicker />
+      </div>
 
       <div className="section-divider"></div>
 

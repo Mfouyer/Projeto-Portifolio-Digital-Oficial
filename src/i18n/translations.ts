@@ -196,6 +196,35 @@ export const I18N: Record<Lang, Dict> = {
       'soluções multiplataforma que agregam valor às operações.',
       'IA que entrega resultado e valor de negócio, e não apenas protótipos.',
     ],
+
+    /* ── Live Proof panel ── */
+    'lp.title': 'AGENT-RUNTIME',
+    'lp.s1.prompt': '"Preciso de um site que converta"',
+    'lp.s1.step1': 'Analisar brief e definir design system',
+    'lp.s1.step2': 'Build React + Tailwind — Lighthouse 98',
+    'lp.s1.step3': 'Deploy Coolify · SSL · dominio configurado',
+    'lp.s1.result': 'LIVE em producao',
+    'lp.s2.prompt': '"Automatiza este processo repetitivo"',
+    'lp.s2.step1': 'Mapear fluxo · identificar pontos de automacao',
+    'lp.s2.step2': 'API REST + base de dados + billing integrado',
+    'lp.s2.step3': 'Deploy · monitoring · alertas configurados',
+    'lp.s2.result': 'SaaS a faturar',
+    'lp.s3.prompt': '"Quero um agente que trate disto 24/7"',
+    'lp.s3.step1': 'Orquestracao multi-agente · tools definidas',
+    'lp.s3.step2': 'Memoria persistente · contexto entre sessoes',
+    'lp.s3.step3': 'Monitoring · auto-recovery · logs auditaveis',
+    'lp.s3.result': 'Agente em producao 24/7',
+    'lp.type.site': 'SITE',
+    'lp.type.saas': 'MICRO-SAAS',
+    'lp.type.agent': 'AGENTE',
+
+    /* ── Credibility ticker ── */
+    'ticker.fact1': '14 PROJETOS EM PRODUCAO',
+    'ticker.fact2': '2 CERTIFICACOES MICROSOFT AI',
+    'ticker.fact3': 'SISTEMAS MULTI-AGENTE EM PRODUCAO',
+    'ticker.fact4': 'SITES',
+    'ticker.fact5': 'MICRO-SAAS',
+    'ticker.fact6': 'AGENTES',
   },
 
   /* ───────── ENGLISH (EN) ───────── */
@@ -381,6 +410,35 @@ export const I18N: Record<Lang, Dict> = {
       'cross-platform solutions that add value to operations.',
       'AI that delivers results and business value, not just prototypes.',
     ],
+
+    /* ── Live Proof panel ── */
+    'lp.title': 'AGENT-RUNTIME',
+    'lp.s1.prompt': '"I need a website that converts"',
+    'lp.s1.step1': 'Analyse brief and define design system',
+    'lp.s1.step2': 'Build React + Tailwind — Lighthouse 98',
+    'lp.s1.step3': 'Deploy Coolify · SSL · domain configured',
+    'lp.s1.result': 'LIVE in production',
+    'lp.s2.prompt': '"Automate this repetitive process"',
+    'lp.s2.step1': 'Map flow · identify automation touchpoints',
+    'lp.s2.step2': 'REST API + database + billing integrated',
+    'lp.s2.step3': 'Deploy · monitoring · alerts configured',
+    'lp.s2.result': 'SaaS billing',
+    'lp.s3.prompt': '"I want an agent handling this 24/7"',
+    'lp.s3.step1': 'Multi-agent orchestration · tools defined',
+    'lp.s3.step2': 'Persistent memory · context across sessions',
+    'lp.s3.step3': 'Monitoring · auto-recovery · auditable logs',
+    'lp.s3.result': 'Agent live in production 24/7',
+    'lp.type.site': 'SITE',
+    'lp.type.saas': 'MICRO-SAAS',
+    'lp.type.agent': 'AGENT',
+
+    /* ── Credibility ticker ── */
+    'ticker.fact1': '14 PROJECTS IN PRODUCTION',
+    'ticker.fact2': '2 MICROSOFT AI CERTIFICATIONS',
+    'ticker.fact3': 'MULTI-AGENT SYSTEMS IN PRODUCTION',
+    'ticker.fact4': 'SITES',
+    'ticker.fact5': 'MICRO-SAAS',
+    'ticker.fact6': 'AGENTS',
   },
 
   /* ───────── ESPAÑOL (ES) ───────── */
@@ -566,6 +624,35 @@ export const I18N: Record<Lang, Dict> = {
       'soluciones multiplataforma que aportan valor a las operaciones.',
       'IA que entrega resultados y valor de negocio, no solo prototipos.',
     ],
+
+    /* ── Live Proof panel ── */
+    'lp.title': 'AGENT-RUNTIME',
+    'lp.s1.prompt': '"Necesito un sitio web que convierta"',
+    'lp.s1.step1': 'Analizar brief y definir design system',
+    'lp.s1.step2': 'Build React + Tailwind — Lighthouse 98',
+    'lp.s1.step3': 'Deploy Coolify · SSL · dominio configurado',
+    'lp.s1.result': 'LIVE en produccion',
+    'lp.s2.prompt': '"Automatiza este proceso repetitivo"',
+    'lp.s2.step1': 'Mapear flujo · identificar puntos de automacion',
+    'lp.s2.step2': 'API REST + base de datos + billing integrado',
+    'lp.s2.step3': 'Deploy · monitoring · alertas configurados',
+    'lp.s2.result': 'SaaS facturando',
+    'lp.s3.prompt': '"Quiero un agente que gestione esto 24/7"',
+    'lp.s3.step1': 'Orquestacion multiagente · tools definidas',
+    'lp.s3.step2': 'Memoria persistente · contexto entre sesiones',
+    'lp.s3.step3': 'Monitoring · auto-recovery · logs auditables',
+    'lp.s3.result': 'Agente en produccion 24/7',
+    'lp.type.site': 'SITIO',
+    'lp.type.saas': 'MICRO-SAAS',
+    'lp.type.agent': 'AGENTE',
+
+    /* ── Credibility ticker ── */
+    'ticker.fact1': '14 PROYECTOS EN PRODUCCION',
+    'ticker.fact2': '2 CERTIFICACIONES MICROSOFT AI',
+    'ticker.fact3': 'SISTEMAS MULTIAGENTE EN PRODUCCION',
+    'ticker.fact4': 'SITIOS WEB',
+    'ticker.fact5': 'MICRO-SAAS',
+    'ticker.fact6': 'AGENTES',
   },
 };
 
